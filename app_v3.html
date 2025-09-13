@@ -1037,6 +1037,858 @@
             color: var(--gray-300);
         }
 
+        /* Workspace Management Styles */
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .workspaces-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .workspace-card {
+            background: var(--bg-light);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .workspace-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        body.dark-mode .workspace-card {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .workspace-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .workspace-color-badge {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .workspace-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        body.dark-mode .workspace-title {
+            color: var(--text-light);
+        }
+
+        .workspace-description {
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        body.dark-mode .workspace-description {
+            color: var(--gray-400);
+        }
+
+        .workspace-stats {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .workspace-stat {
+            background: var(--gray-100);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        body.dark-mode .workspace-stat {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .workspace-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .workspace-action {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .workspace-action.edit {
+            background: var(--primary);
+            color: white;
+        }
+
+        .workspace-action.edit:hover {
+            background: var(--primary-dark);
+        }
+
+        .workspace-action.delete {
+            background: var(--error);
+            color: white;
+        }
+
+        .workspace-action.delete:hover {
+            background: #dc2626;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 0;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        body.dark-mode .modal-content {
+            background: var(--gray-800);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .modal-header {
+            border-color: var(--gray-700);
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .modal-header h3 {
+            color: var(--text-light);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-500);
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .modal-close:hover {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .modal form {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .form-group label {
+            color: var(--text-light);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(49, 201, 193, 0.1);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select {
+            background: var(--gray-700);
+            border-color: var(--gray-600);
+            color: var(--text-light);
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .color-picker input[type="radio"] {
+            display: none;
+        }
+
+        .color-option {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-picker input[type="radio"]:checked + .color-option {
+            border-color: var(--text-dark);
+            box-shadow: 0 0 0 2px var(--bg-light);
+        }
+
+        body.dark-mode .color-picker input[type="radio"]:checked + .color-option {
+            border-color: var(--text-light);
+            box-shadow: 0 0 0 2px var(--bg-dark);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-300);
+        }
+
+        body.dark-mode .btn-secondary {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            background: var(--gray-600);
+        }
+
+        /* Kanban Board Updates */
+        .kanban-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .kanban-board {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .kanban-column {
+            min-width: 280px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        body.dark-mode .kanban-column {
+            background: var(--gray-700);
+        }
+
+        .kanban-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-300);
+        }
+
+        body.dark-mode .kanban-column-header {
+            border-color: var(--gray-600);
+        }
+
+        .kanban-column-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .kanban-column-header h3 {
+            color: var(--text-light);
+        }
+
+        .task-count {
+            background: var(--gray-200);
+            color: var(--gray-600);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        body.dark-mode .task-count {
+            background: var(--gray-600);
+            color: var(--gray-300);
+        }
+
+        /* Boards Management Styles */
+        .boards-header {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .boards-header {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .boards-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .board-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .board-selector label {
+            font-weight: 500;
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+
+        body.dark-mode .board-selector label {
+            color: var(--text-light);
+        }
+
+        .board-dropdown {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .board-dropdown:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(49, 201, 193, 0.1);
+        }
+
+        body.dark-mode .board-dropdown {
+            background: var(--gray-700);
+            border-color: var(--gray-600);
+            color: var(--text-light);
+        }
+
+        .board-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .kanban-container {
+            margin-top: 1rem;
+        }
+
+        .kanban-board {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            min-height: 400px;
+        }
+
+        .kanban-column {
+            min-width: 280px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 1rem;
+            position: relative;
+        }
+
+        body.dark-mode .kanban-column {
+            background: var(--gray-700);
+        }
+
+        .kanban-column.drag-over {
+            background: rgba(49, 201, 193, 0.1);
+            border: 2px dashed var(--primary);
+        }
+
+        .kanban-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-300);
+        }
+
+        body.dark-mode .kanban-column-header {
+            border-color: var(--gray-600);
+        }
+
+        .kanban-column-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .kanban-column-header h3 {
+            color: var(--text-light);
+        }
+
+        .column-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-task-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .add-task-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .kanban-tasks {
+            min-height: 100px;
+            transition: all 0.2s ease;
+        }
+
+        .kanban-tasks.drag-over {
+            min-height: 120px;
+            border: 2px dashed var(--primary);
+            border-radius: 4px;
+            background: rgba(49, 201, 193, 0.05);
+        }
+
+        .kanban-task {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            cursor: grab;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .kanban-task:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .kanban-task.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+            cursor: grabbing;
+            z-index: 1000;
+        }
+
+        body.dark-mode .kanban-task {
+            background: var(--gray-50);
+            border-color: var(--gray-200);
+            color: var(--text-dark);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .task-header h4 {
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
+
+        body.dark-mode .task-header h4 {
+            color: var(--text-dark);
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .priority-badge.priority-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-badge.priority-medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-badge.priority-low {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .task-description {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+
+        body.dark-mode .task-description {
+            color: var(--gray-300);
+        }
+
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .task-workspace {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            color: white;
+        }
+
+        .task-due {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        body.dark-mode .task-due {
+            color: var(--gray-400);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .task-action {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .task-action:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .task-action:hover {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        /* Column Input Groups */
+        .column-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .column-input-group input {
+            flex: 1;
+        }
+
+        .remove-column-btn {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .remove-column-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Activity Log Styles */
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            transition: all 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background: var(--gray-50);
+        }
+
+        body.dark-mode .activity-item {
+            border-color: var(--gray-700);
+        }
+
+        body.dark-mode .activity-item:hover {
+            background: var(--gray-700);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-message {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+            line-height: 1.4;
+        }
+
+        body.dark-mode .activity-message {
+            color: var(--text-light);
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        body.dark-mode .activity-time {
+            color: var(--gray-400);
+        }
+
+        .activity-details-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .activity-details-btn:hover {
+            background: rgba(49, 201, 193, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .boards-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .board-selector {
+                justify-content: space-between;
+            }
+
+            .board-actions {
+                justify-content: center;
+            }
+
+            .kanban-board {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .kanban-column {
+                min-width: auto;
+            }
+        }
+
         /* Theme Toggle */
         .theme-toggle {
             background: var(--gray-100);
@@ -1368,27 +2220,56 @@
                     <p class="page-subtitle">Create, manage, and collaborate on projects within your workspaces.</p>
                 </div>
                 <div class="page-content">
-                    <h2>Your Workspaces</h2>
-                    <p>Create, manage, and collaborate on projects within your workspaces.</p>
-                    <div style="margin-top: 2rem;">
-                        <button style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600;">Create New Workspace</button>
+                    <div class="workspace-header">
+                        <h2>Your Workspaces</h2>
+                        <button id="create-workspace-btn" class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Create New Workspace
+                        </button>
                     </div>
-                    <div style="margin-top: 2rem; display: grid; gap: 1rem;">
-                        <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
-                            <h3>Marketing Campaign</h3>
-                            <p>Q4 Product Launch</p>
-                            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                                <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">5 tasks</span>
-                                <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">3 members</span>
+                    
+                    <div id="workspaces-container" class="workspaces-grid">
+                        <!-- Workspaces will be dynamically generated here -->
+                    </div>
+                    
+                    <!-- Workspace Modal -->
+                    <div id="workspace-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 id="workspace-modal-title">Create New Workspace</h3>
+                                <button id="close-workspace-modal" class="modal-close">&times;</button>
                             </div>
-                        </div>
-                        <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
-                            <h3>Website Redesign</h3>
-                            <p>Complete by December 15</p>
-                            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                                <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">12 tasks</span>
-                                <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">5 members</span>
-                            </div>
+                            <form id="workspace-form">
+                                <div class="form-group">
+                                    <label for="workspace-name">Workspace Name</label>
+                                    <input type="text" id="workspace-name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="workspace-description">Description</label>
+                                    <textarea id="workspace-description" name="description" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="workspace-color">Color Tag</label>
+                                    <div class="color-picker">
+                                        <input type="radio" id="color-blue" name="color" value="#3b82f6" checked>
+                                        <label for="color-blue" class="color-option" style="background: #3b82f6;"></label>
+                                        <input type="radio" id="color-green" name="color" value="#10b981">
+                                        <label for="color-green" class="color-option" style="background: #10b981;"></label>
+                                        <input type="radio" id="color-purple" name="color" value="#8b5cf6">
+                                        <label for="color-purple" class="color-option" style="background: #8b5cf6;"></label>
+                                        <input type="radio" id="color-orange" name="color" value="#f59e0b">
+                                        <label for="color-orange" class="color-option" style="background: #f59e0b;"></label>
+                                        <input type="radio" id="color-red" name="color" value="#ef4444">
+                                        <label for="color-red" class="color-option" style="background: #ef4444;"></label>
+                                        <input type="radio" id="color-teal" name="color" value="#31c9c1">
+                                        <label for="color-teal" class="color-option" style="background: #31c9c1;"></label>
+                                    </div>
+                                </div>
+                                <div class="modal-actions">
+                                    <button type="button" id="cancel-workspace" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">Save Workspace</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -1401,20 +2282,137 @@
                     <p class="page-subtitle">Visualize your workflow with our intuitive Kanban board.</p>
                 </div>
                 <div class="page-content">
-                    <h2>Drag and Drop Your Tasks</h2>
-                    <p>Visualize your workflow with our intuitive Kanban board.</p>
-                    <div style="margin-top: 2rem; display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem;">
-                        <div class="kanban-column" data-column="todo" style="min-width: 280px; background: var(--gray-100); padding: 1rem; border-radius: 8px;">
-                            <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">To Do</h3>
-                            <div class="kanban-tasks"></div>
+                    <!-- Boards Management Header -->
+                    <div class="boards-header">
+                        <div class="boards-controls">
+                            <div class="board-selector">
+                                <label for="board-select">Current Board:</label>
+                                <select id="board-select" class="board-dropdown">
+                                    <option value="">Select a board</option>
+                                </select>
+                            </div>
+                            <div class="board-actions">
+                                <button id="new-board-btn" class="btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                    New Board
+                                </button>
+                                <button id="edit-board-btn" class="btn-secondary" disabled>
+                                    <i class="fas fa-edit"></i>
+                                    Edit Board
+                                </button>
+                                <button id="delete-board-btn" class="btn-danger" disabled>
+                                    <i class="fas fa-trash"></i>
+                                    Delete Board
+                                </button>
+                            </div>
                         </div>
-                        <div class="kanban-column" data-column="in-progress" style="min-width: 280px; background: var(--gray-100); padding: 1rem; border-radius: 8px;">
-                            <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">In Progress</h3>
-                            <div class="kanban-tasks"></div>
+                    </div>
+
+                    <!-- Kanban Board Container -->
+                    <div class="kanban-container">
+                        <div class="kanban-board" id="kanban-board">
+                            <!-- Columns will be dynamically generated here -->
                         </div>
-                        <div class="kanban-column" data-column="done" style="min-width: 280px; background: var(--gray-100); padding: 1rem; border-radius: 8px;">
-                            <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">Done</h3>
-                            <div class="kanban-tasks"></div>
+                    </div>
+                    
+                    <!-- Task Modal -->
+                    <div id="task-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 id="task-modal-title">Create New Task</h3>
+                                <button id="close-task-modal" class="modal-close">&times;</button>
+                            </div>
+                            <form id="task-form">
+                                <div class="form-group">
+                                    <label for="task-title">Task Title</label>
+                                    <input type="text" id="task-title" name="title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="task-description">Description</label>
+                                    <textarea id="task-description" name="description" rows="3"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="task-workspace">Workspace</label>
+                                        <select id="task-workspace" name="workspace" required>
+                                            <option value="">Select a workspace</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="task-priority">Priority</label>
+                                        <select id="task-priority" name="priority" required>
+                                            <option value="low">Low</option>
+                                            <option value="medium" selected>Medium</option>
+                                            <option value="high">High</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="task-due-date">Due Date</label>
+                                        <input type="date" id="task-due-date" name="dueDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="task-status">Status</label>
+                                        <select id="task-status" name="status" required>
+                                            <option value="todo" selected>To Do</option>
+                                            <option value="in-progress">In Progress</option>
+                                            <option value="done">Done</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-actions">
+                                    <button type="button" id="cancel-task" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">Save Task</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Board Management Modal -->
+                    <div id="board-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 id="board-modal-title">Create New Board</h3>
+                                <button id="close-board-modal" class="modal-close">&times;</button>
+                            </div>
+                            <form id="board-form">
+                                <div class="form-group">
+                                    <label for="board-name">Board Name</label>
+                                    <input type="text" id="board-name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Columns</label>
+                                    <div id="columns-container">
+                                        <div class="column-input-group">
+                                            <input type="text" name="columns" value="To Do" required>
+                                            <button type="button" class="remove-column-btn" onclick="removeColumn(this)" style="display: none;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        <div class="column-input-group">
+                                            <input type="text" name="columns" value="In Progress" required>
+                                            <button type="button" class="remove-column-btn" onclick="removeColumn(this)" style="display: none;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        <div class="column-input-group">
+                                            <input type="text" name="columns" value="Done" required>
+                                            <button type="button" class="remove-column-btn" onclick="removeColumn(this)" style="display: none;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="add-column-btn" class="btn-secondary">
+                                        <i class="fas fa-plus"></i>
+                                        Add Column
+                                    </button>
+                                </div>
+                                <div class="modal-actions">
+                                    <button type="button" id="cancel-board" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">Save Board</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -1935,6 +2933,9 @@
                 case 'dashboard':
                     loadDashboardData();
                     break;
+                case 'workspace':
+                    renderWorkspaces();
+                    break;
                 case 'kanban':
                     loadKanbanData();
                     break;
@@ -2276,8 +3277,1210 @@
         function init() {
             initializeMockUsers();
             initializeMockData();
+            initializeWorkspaceAndTaskManagement();
             loadTheme();
             checkAuthStatus();
+        }
+
+        // ========================================
+        // ENHANCED DATA MODEL & MANAGEMENT
+        // ========================================
+
+        // Enhanced data structures
+        let workspaces = JSON.parse(localStorage.getItem('workspaces')) || [];
+        let boards = JSON.parse(localStorage.getItem('boards')) || [];
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        let activityLog = JSON.parse(localStorage.getItem('activityLog')) || [];
+        let currentBoardId = localStorage.getItem('currentBoardId') || null;
+        let editingWorkspaceId = null;
+        let editingTaskId = null;
+        let editingBoardId = null;
+
+        // ========================================
+        // ACTIVITY LOG SYSTEM
+        // ========================================
+
+        // Push activity entry to log
+        function pushActivity({type, message, details = {}}) {
+            const activeUser = JSON.parse(localStorage.getItem('activeUser'));
+            const user = activeUser ? activeUser.name || activeUser.email : 'Unknown User';
+            
+            const activity = {
+                id: Date.now(),
+                type,
+                message,
+                details,
+                user,
+                timestamp: new Date().toISOString()
+            };
+            
+            activityLog.unshift(activity);
+            localStorage.setItem('activityLog', JSON.stringify(activityLog));
+            
+            // Re-render activity UI if on activity page
+            if (document.getElementById('activity').classList.contains('active')) {
+                loadActivityData();
+            }
+        }
+
+        // ========================================
+        // SAMPLE DATA INITIALIZATION
+        // ========================================
+
+        // Initialize default workspaces
+        function initializeDefaultWorkspaces() {
+            if (workspaces.length === 0) {
+                workspaces = [
+                    {
+                        id: 1,
+                        name: 'Marketing Campaign',
+                        description: 'Q4 Product Launch',
+                        color: '#3b82f6',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        name: 'Website Redesign',
+                        description: 'Complete by December 15',
+                        color: '#10b981',
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem('workspaces', JSON.stringify(workspaces));
+            }
+        }
+
+        // Initialize default boards
+        function initializeDefaultBoards() {
+            if (boards.length === 0) {
+                const defaultBoard = {
+                    id: 1,
+                    name: 'Main Board',
+                    columns: [
+                        { id: 1, name: 'To Do' },
+                        { id: 2, name: 'In Progress' },
+                        { id: 3, name: 'Done' }
+                    ],
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                boards = [defaultBoard];
+                localStorage.setItem('boards', JSON.stringify(boards));
+                currentBoardId = 1;
+                localStorage.setItem('currentBoardId', currentBoardId);
+            }
+        }
+
+        // Initialize default tasks with enhanced structure
+        function initializeDefaultTasks() {
+            if (tasks.length === 0) {
+                const today = new Date();
+                const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+                const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+                tasks = [
+                    {
+                        id: 1,
+                        title: 'Design homepage mockup',
+                        description: 'Create wireframes and high-fidelity designs for the new homepage layout',
+                        dueDate: tomorrow.toISOString().split('T')[0],
+                        workspaceId: 1,
+                        boardId: 1,
+                        columnId: 1,
+                        priority: 'high',
+                        status: 'todo',
+                        order: 0,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        title: 'Write project proposal',
+                        description: 'Draft the Q1 2024 project proposal document',
+                        dueDate: nextWeek.toISOString().split('T')[0],
+                        workspaceId: 1,
+                        boardId: 1,
+                        columnId: 2,
+                        priority: 'medium',
+                        status: 'in-progress',
+                        order: 0,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    },
+                    {
+                        id: 3,
+                        title: 'Update API documentation',
+                        description: 'Update REST API documentation with new endpoints',
+                        dueDate: today.toISOString().split('T')[0],
+                        workspaceId: 2,
+                        boardId: 1,
+                        columnId: 3,
+                        priority: 'low',
+                        status: 'done',
+                        order: 0,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    },
+                    {
+                        id: 4,
+                        title: 'Review design mockups',
+                        description: 'Review and provide feedback on homepage mockups',
+                        dueDate: nextWeek.toISOString().split('T')[0],
+                        workspaceId: 1,
+                        boardId: 1,
+                        columnId: 1,
+                        priority: 'medium',
+                        status: 'todo',
+                        order: 1,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+        }
+
+        // ========================================
+        // WORKSPACE MANAGEMENT
+        // ========================================
+
+        function renderWorkspaces() {
+            const container = document.getElementById('workspaces-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            workspaces.forEach(workspace => {
+                const workspaceTasks = tasks.filter(task => task.workspaceId === workspace.id);
+                const completedTasks = workspaceTasks.filter(task => task.status === 'done').length;
+                
+                const workspaceCard = document.createElement('div');
+                workspaceCard.className = 'workspace-card';
+                workspaceCard.innerHTML = `
+                    <div class="workspace-card-header">
+                        <div class="workspace-color-badge" style="background-color: ${workspace.color}"></div>
+                        <h3 class="workspace-title">${workspace.name}</h3>
+                    </div>
+                    <p class="workspace-description">${workspace.description}</p>
+                    <div class="workspace-stats">
+                        <span class="workspace-stat">${workspaceTasks.length} tasks</span>
+                        <span class="workspace-stat">${completedTasks} completed</span>
+                    </div>
+                    <div class="workspace-actions">
+                        <button class="workspace-action edit" onclick="editWorkspace(${workspace.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="workspace-action delete" onclick="deleteWorkspace(${workspace.id})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(workspaceCard);
+            });
+        }
+
+        function showWorkspaceModal(isEdit = false, workspaceId = null) {
+            const modal = document.getElementById('workspace-modal');
+            const title = document.getElementById('workspace-modal-title');
+            const form = document.getElementById('workspace-form');
+            
+            if (isEdit && workspaceId) {
+                const workspace = workspaces.find(w => w.id === workspaceId);
+                if (workspace) {
+                    title.textContent = 'Edit Workspace';
+                    document.getElementById('workspace-name').value = workspace.name;
+                    document.getElementById('workspace-description').value = workspace.description;
+                    document.querySelector(`input[name="color"][value="${workspace.color}"]`).checked = true;
+                    editingWorkspaceId = workspaceId;
+                }
+            } else {
+                title.textContent = 'Create New Workspace';
+                form.reset();
+                document.getElementById('color-blue').checked = true;
+                editingWorkspaceId = null;
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function hideWorkspaceModal() {
+            const modal = document.getElementById('workspace-modal');
+            modal.classList.remove('show');
+            editingWorkspaceId = null;
+        }
+
+        function saveWorkspace(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const workspaceData = {
+                name: formData.get('name'),
+                description: formData.get('description'),
+                color: formData.get('color')
+            };
+
+            if (editingWorkspaceId) {
+                // Update existing workspace
+                const index = workspaces.findIndex(w => w.id === editingWorkspaceId);
+                if (index !== -1) {
+                    workspaces[index] = { ...workspaces[index], ...workspaceData };
+                }
+            } else {
+                // Create new workspace
+                const newWorkspace = {
+                    id: Date.now(),
+                    ...workspaceData,
+                    createdAt: new Date().toISOString()
+                };
+                workspaces.push(newWorkspace);
+            }
+
+            localStorage.setItem('workspaces', JSON.stringify(workspaces));
+            renderWorkspaces();
+            updateWorkspaceDropdowns();
+            hideWorkspaceModal();
+        }
+
+        function editWorkspace(workspaceId) {
+            showWorkspaceModal(true, workspaceId);
+        }
+
+        function deleteWorkspace(workspaceId) {
+            if (confirm('Are you sure you want to delete this workspace? This will also delete all associated tasks.')) {
+                // Remove workspace
+                workspaces = workspaces.filter(w => w.id !== workspaceId);
+                // Remove associated tasks
+                tasks = tasks.filter(t => t.workspaceId !== workspaceId);
+                
+                localStorage.setItem('workspaces', JSON.stringify(workspaces));
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                
+                renderWorkspaces();
+                updateWorkspaceDropdowns();
+                loadKanbanData();
+            }
+        }
+
+        // ========================================
+        // TASK MANAGEMENT
+        // ========================================
+
+        function renderTasks() {
+            loadKanbanData();
+        }
+
+        function showTaskModal(isEdit = false, taskId = null) {
+            const modal = document.getElementById('task-modal');
+            const title = document.getElementById('task-modal-title');
+            const form = document.getElementById('task-form');
+            
+            updateWorkspaceDropdowns();
+            
+            if (isEdit && taskId) {
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    title.textContent = 'Edit Task';
+                    document.getElementById('task-title').value = task.title;
+                    document.getElementById('task-description').value = task.description;
+                    document.getElementById('task-workspace').value = task.workspaceId;
+                    document.getElementById('task-priority').value = task.priority;
+                    document.getElementById('task-due-date').value = task.dueDate;
+                    document.getElementById('task-status').value = task.status;
+                    editingTaskId = taskId;
+                }
+            } else {
+                title.textContent = 'Create New Task';
+                form.reset();
+                document.getElementById('task-priority').value = 'medium';
+                document.getElementById('task-status').value = 'todo';
+                editingTaskId = null;
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function hideTaskModal() {
+            const modal = document.getElementById('task-modal');
+            modal.classList.remove('show');
+            editingTaskId = null;
+        }
+
+        function saveTask(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const taskData = {
+                title: formData.get('title'),
+                description: formData.get('description'),
+                workspaceId: parseInt(formData.get('workspace')),
+                priority: formData.get('priority'),
+                dueDate: formData.get('dueDate'),
+                status: formData.get('status')
+            };
+
+            if (editingTaskId) {
+                // Update existing task
+                const index = tasks.findIndex(t => t.id === editingTaskId);
+                if (index !== -1) {
+                    tasks[index] = { ...tasks[index], ...taskData };
+                }
+            } else {
+                // Create new task
+                const newTask = {
+                    id: Date.now(),
+                    ...taskData,
+                    createdAt: new Date().toISOString()
+                };
+                tasks.push(newTask);
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+            hideTaskModal();
+        }
+
+        function deleteTask(taskId) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                tasks = tasks.filter(t => t.id !== taskId);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                renderTasks();
+            }
+        }
+
+        function updateWorkspaceDropdowns() {
+            const workspaceSelect = document.getElementById('task-workspace');
+            if (!workspaceSelect) return;
+
+            workspaceSelect.innerHTML = '<option value="">Select a workspace</option>';
+            workspaces.forEach(workspace => {
+                const option = document.createElement('option');
+                option.value = workspace.id;
+                option.textContent = workspace.name;
+                workspaceSelect.appendChild(option);
+            });
+        }
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+
+        function setupWorkspaceEventListeners() {
+            // Workspace modal events
+            const createWorkspaceBtn = document.getElementById('create-workspace-btn');
+            const workspaceModal = document.getElementById('workspace-modal');
+            const workspaceForm = document.getElementById('workspace-form');
+            const closeWorkspaceModal = document.getElementById('close-workspace-modal');
+            const cancelWorkspace = document.getElementById('cancel-workspace');
+
+            if (createWorkspaceBtn) {
+                createWorkspaceBtn.addEventListener('click', () => showWorkspaceModal());
+            }
+
+            if (workspaceForm) {
+                workspaceForm.addEventListener('submit', saveWorkspace);
+            }
+
+            if (closeWorkspaceModal) {
+                closeWorkspaceModal.addEventListener('click', hideWorkspaceModal);
+            }
+
+            if (cancelWorkspace) {
+                cancelWorkspace.addEventListener('click', hideWorkspaceModal);
+            }
+
+            if (workspaceModal) {
+                workspaceModal.addEventListener('click', (e) => {
+                    if (e.target === workspaceModal) {
+                        hideWorkspaceModal();
+                    }
+                });
+            }
+        }
+
+        function setupTaskEventListeners() {
+            // Task modal events
+            const createTaskBtn = document.getElementById('create-task-btn');
+            const taskModal = document.getElementById('task-modal');
+            const taskForm = document.getElementById('task-form');
+            const closeTaskModal = document.getElementById('close-task-modal');
+            const cancelTask = document.getElementById('cancel-task');
+
+            if (createTaskBtn) {
+                createTaskBtn.addEventListener('click', () => showTaskModal());
+            }
+
+            if (taskForm) {
+                taskForm.addEventListener('submit', saveTask);
+            }
+
+            if (closeTaskModal) {
+                closeTaskModal.addEventListener('click', hideTaskModal);
+            }
+
+            if (cancelTask) {
+                cancelTask.addEventListener('click', hideTaskModal);
+            }
+
+            if (taskModal) {
+                taskModal.addEventListener('click', (e) => {
+                    if (e.target === taskModal) {
+                        hideTaskModal();
+                    }
+                });
+            }
+        }
+
+        // ========================================
+        // ENHANCED KANBAN FUNCTIONALITY
+        // ========================================
+
+        function createKanbanTask(task) {
+            const workspace = workspaces.find(w => w.id === task.workspaceId);
+            const workspaceColor = workspace ? workspace.color : '#31c9c1';
+            
+            const taskElement = document.createElement('div');
+            taskElement.className = 'kanban-task';
+            taskElement.draggable = true;
+            taskElement.dataset.taskId = task.id;
+            
+            const priorityClass = `priority-${task.priority}`;
+            const dueDate = task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date';
+            
+            taskElement.innerHTML = `
+                <div class="task-header">
+                    <h4>${task.title}</h4>
+                    <span class="priority-badge ${priorityClass}">${task.priority}</span>
+                </div>
+                <p class="task-description">${task.description}</p>
+                <div class="task-footer">
+                    <div class="task-workspace" style="background-color: ${workspaceColor}; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
+                        ${workspace ? workspace.name : 'Unknown'}
+                    </div>
+                    <div class="task-due">${dueDate}</div>
+                </div>
+                <div class="task-actions">
+                    <button class="task-action" onclick="showTaskModal(true, ${task.id})" title="Edit task">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="task-action" onclick="deleteTask(${task.id})" title="Delete task">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            return taskElement;
+        }
+
+        function loadKanbanData() {
+            const kanbanBoard = document.getElementById('kanban-board');
+            if (!kanbanBoard) return;
+            
+            // Clear existing columns
+            kanbanBoard.innerHTML = '';
+            
+            if (!currentBoardId) {
+                kanbanBoard.innerHTML = '<p style="text-align: center; color: var(--gray-500); padding: 2rem;">No board selected</p>';
+                return;
+            }
+            
+            const currentBoard = boards.find(b => b.id == currentBoardId);
+            if (!currentBoard) return;
+            
+            // Create columns dynamically
+            currentBoard.columns.forEach(column => {
+                const columnElement = document.createElement('div');
+                columnElement.className = 'kanban-column';
+                columnElement.dataset.columnId = column.id;
+                
+                const columnTasks = tasks
+                    .filter(task => task.boardId == currentBoardId && task.columnId == column.id)
+                    .sort((a, b) => a.order - b.order);
+                
+                columnElement.innerHTML = `
+                    <div class="kanban-column-header">
+                        <h3>${column.name}</h3>
+                        <div class="column-header-actions">
+                            <span class="task-count">${columnTasks.length}</span>
+                            <button class="add-task-btn" onclick="showTaskModal(false, null, ${column.id})" title="Add task">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="kanban-tasks" data-column-id="${column.id}">
+                        ${columnTasks.map(task => createKanbanTaskHTML(task)).join('')}
+                    </div>
+                `;
+                
+                kanbanBoard.appendChild(columnElement);
+            });
+            
+            // Setup drag and drop
+            setupKanbanDragAndDrop();
+        }
+
+        function createKanbanTaskHTML(task) {
+            const workspace = workspaces.find(w => w.id === task.workspaceId);
+            const workspaceColor = workspace ? workspace.color : '#31c9c1';
+            const priorityClass = `priority-${task.priority}`;
+            const dueDate = task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date';
+            
+            return `
+                <div class="kanban-task" data-task-id="${task.id}" draggable="true">
+                    <div class="task-header">
+                        <h4>${task.title}</h4>
+                        <span class="priority-badge ${priorityClass}">${task.priority}</span>
+                    </div>
+                    <p class="task-description">${task.description}</p>
+                    <div class="task-footer">
+                        <div class="task-workspace" style="background-color: ${workspaceColor}; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
+                            ${workspace ? workspace.name : 'Unknown'}
+                        </div>
+                        <div class="task-due">${dueDate}</div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-action" onclick="showTaskModal(true, ${task.id})" title="Edit task">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="task-action" onclick="deleteTask(${task.id})" title="Delete task">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // BOARDS MANAGEMENT
+        // ========================================
+
+        function renderBoardsDropdown() {
+            const select = document.getElementById('board-select');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">Select a board</option>';
+            boards.forEach(board => {
+                const option = document.createElement('option');
+                option.value = board.id;
+                option.textContent = board.name;
+                if (board.id === parseInt(currentBoardId)) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+        }
+
+        function showBoardModal(isEdit = false, boardId = null) {
+            const modal = document.getElementById('board-modal');
+            const title = document.getElementById('board-modal-title');
+            const form = document.getElementById('board-form');
+            
+            if (isEdit && boardId) {
+                const board = boards.find(b => b.id === boardId);
+                if (board) {
+                    title.textContent = 'Edit Board';
+                    document.getElementById('board-name').value = board.name;
+                    
+                    // Clear existing columns
+                    const container = document.getElementById('columns-container');
+                    container.innerHTML = '';
+                    
+                    // Add existing columns
+                    board.columns.forEach((column, index) => {
+                        addColumnInput(column.name, index === 0);
+                    });
+                    
+                    editingBoardId = boardId;
+                }
+            } else {
+                title.textContent = 'Create New Board';
+                form.reset();
+                editingBoardId = null;
+                
+                // Reset to default columns
+                const container = document.getElementById('columns-container');
+                container.innerHTML = '';
+                addColumnInput('To Do', true);
+                addColumnInput('In Progress', true);
+                addColumnInput('Done', true);
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function hideBoardModal() {
+            const modal = document.getElementById('board-modal');
+            modal.classList.remove('show');
+            editingBoardId = null;
+        }
+
+        function addColumnInput(value = '', isFirst = false) {
+            const container = document.getElementById('columns-container');
+            const columnGroup = document.createElement('div');
+            columnGroup.className = 'column-input-group';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'columns';
+            input.value = value;
+            input.required = true;
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'remove-column-btn';
+            removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            removeBtn.onclick = () => removeColumn(removeBtn);
+            
+            // Show remove button only if not the first column
+            if (!isFirst) {
+                removeBtn.style.display = 'block';
+            }
+            
+            columnGroup.appendChild(input);
+            columnGroup.appendChild(removeBtn);
+            container.appendChild(columnGroup);
+        }
+
+        function removeColumn(button) {
+            button.parentElement.remove();
+        }
+
+        function saveBoard(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const boardName = formData.get('name');
+            const columnNames = formData.getAll('columns');
+            
+            if (editingBoardId) {
+                // Update existing board
+                const index = boards.findIndex(b => b.id === editingBoardId);
+                if (index !== -1) {
+                    const oldBoard = boards[index];
+                    const oldColumns = oldBoard.columns;
+                    
+                    // Handle column changes
+                    const newColumns = columnNames.map((name, i) => ({
+                        id: oldColumns[i] ? oldColumns[i].id : Date.now() + i,
+                        name: name
+                    }));
+                    
+                    // Move tasks from removed columns to first column
+                    const removedColumnIds = oldColumns
+                        .filter(col => !columnNames.includes(col.name))
+                        .map(col => col.id);
+                    
+                    if (removedColumnIds.length > 0 && newColumns.length > 0) {
+                        tasks.forEach(task => {
+                            if (task.boardId === editingBoardId && removedColumnIds.includes(task.columnId)) {
+                                task.columnId = newColumns[0].id;
+                                task.order = tasks.filter(t => t.boardId === editingBoardId && t.columnId === newColumns[0].id).length;
+                            }
+                        });
+                        
+                        pushActivity({
+                            type: 'board_updated',
+                            message: `Board '${boardName}' updated - columns modified`,
+                            details: { boardId: editingBoardId, removedColumns: removedColumnIds }
+                        });
+                    }
+                    
+                    boards[index] = {
+                        ...oldBoard,
+                        name: boardName,
+                        columns: newColumns,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    pushActivity({
+                        type: 'board_updated',
+                        message: `Board '${boardName}' updated`,
+                        details: { boardId: editingBoardId }
+                    });
+                }
+            } else {
+                // Create new board
+                const newBoard = {
+                    id: Date.now(),
+                    name: boardName,
+                    columns: columnNames.map((name, i) => ({
+                        id: Date.now() + i,
+                        name: name
+                    })),
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                boards.push(newBoard);
+                currentBoardId = newBoard.id;
+                localStorage.setItem('currentBoardId', currentBoardId);
+                
+                pushActivity({
+                    type: 'board_created',
+                    message: `Board '${boardName}' created`,
+                    details: { boardId: newBoard.id }
+                });
+            }
+            
+            localStorage.setItem('boards', JSON.stringify(boards));
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            
+            renderBoardsDropdown();
+            loadKanbanData();
+            hideBoardModal();
+        }
+
+        function deleteBoard(boardId) {
+            // Convert to number for proper comparison
+            const numericBoardId = parseInt(boardId);
+            const board = boards.find(b => b.id === numericBoardId);
+            if (!board) return;
+            
+            const boardTasks = tasks.filter(t => t.boardId === numericBoardId);
+            
+            if (confirm(`Are you sure you want to delete the board "${board.name}"? This will also delete ${boardTasks.length} associated tasks.`)) {
+                // Remove board
+                boards = boards.filter(b => b.id !== numericBoardId);
+                
+                // Remove associated tasks
+                tasks = tasks.filter(t => t.boardId !== numericBoardId);
+                
+                // Update current board if needed
+                if (parseInt(currentBoardId) === numericBoardId) {
+                    currentBoardId = boards.length > 0 ? boards[0].id : null;
+                    localStorage.setItem('currentBoardId', currentBoardId);
+                }
+                
+                localStorage.setItem('boards', JSON.stringify(boards));
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                
+                pushActivity({
+                    type: 'board_deleted',
+                    message: `Board '${board.name}' deleted - ${boardTasks.length} tasks removed`,
+                    details: { boardId: numericBoardId, deletedTasks: boardTasks.length }
+                });
+                
+                renderBoardsDropdown();
+                loadKanbanData();
+                
+                // Update button states after deletion
+                const editBoardBtn = document.getElementById('edit-board-btn');
+                const deleteBoardBtn = document.getElementById('delete-board-btn');
+                const hasBoard = !!currentBoardId;
+                if (editBoardBtn) editBoardBtn.disabled = !hasBoard;
+                if (deleteBoardBtn) deleteBoardBtn.disabled = !hasBoard;
+            }
+        }
+
+        function setupBoardEventListeners() {
+            const newBoardBtn = document.getElementById('new-board-btn');
+            const editBoardBtn = document.getElementById('edit-board-btn');
+            const deleteBoardBtn = document.getElementById('delete-board-btn');
+            const boardSelect = document.getElementById('board-select');
+            const boardModal = document.getElementById('board-modal');
+            const boardForm = document.getElementById('board-form');
+            const closeBoardModal = document.getElementById('close-board-modal');
+            const cancelBoard = document.getElementById('cancel-board');
+            const addColumnBtn = document.getElementById('add-column-btn');
+
+            if (newBoardBtn) {
+                newBoardBtn.addEventListener('click', () => showBoardModal());
+            }
+
+            if (editBoardBtn) {
+                editBoardBtn.addEventListener('click', () => {
+                    if (currentBoardId) showBoardModal(true, currentBoardId);
+                });
+            }
+
+            if (deleteBoardBtn) {
+                deleteBoardBtn.addEventListener('click', () => {
+                    if (currentBoardId) deleteBoard(currentBoardId);
+                });
+            }
+
+            if (boardSelect) {
+                boardSelect.addEventListener('change', (e) => {
+                    currentBoardId = e.target.value;
+                    localStorage.setItem('currentBoardId', currentBoardId);
+                    loadKanbanData();
+                    
+                    // Update button states
+                    const hasBoard = !!currentBoardId;
+                    editBoardBtn.disabled = !hasBoard;
+                    deleteBoardBtn.disabled = !hasBoard;
+                });
+            }
+
+            if (boardForm) {
+                boardForm.addEventListener('submit', saveBoard);
+            }
+
+            if (closeBoardModal) {
+                closeBoardModal.addEventListener('click', hideBoardModal);
+            }
+
+            if (cancelBoard) {
+                cancelBoard.addEventListener('click', hideBoardModal);
+            }
+
+            if (addColumnBtn) {
+                addColumnBtn.addEventListener('click', () => addColumnInput());
+            }
+
+            if (boardModal) {
+                boardModal.addEventListener('click', (e) => {
+                    if (e.target === boardModal) {
+                        hideBoardModal();
+                    }
+                });
+            }
+        }
+
+        // ========================================
+        // ROBUST DRAG & DROP IMPLEMENTATION
+        // ========================================
+
+        function setupKanbanDragAndDrop() {
+            const tasks = document.querySelectorAll('.kanban-task');
+            const columns = document.querySelectorAll('.kanban-tasks');
+            
+            tasks.forEach(task => {
+                task.addEventListener('dragstart', handleDragStart);
+                task.addEventListener('dragend', handleDragEnd);
+            });
+            
+            columns.forEach(column => {
+                column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('drop', handleDrop);
+                column.addEventListener('dragenter', handleDragEnter);
+                column.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', e.target.dataset.taskId);
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.target.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            // Only remove drag-over if we're actually leaving the column
+            if (!e.target.contains(e.relatedTarget)) {
+                e.target.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.target.classList.remove('drag-over');
+            
+            const taskId = parseInt(e.dataTransfer.getData('text/plain'));
+            const targetColumnId = parseInt(e.target.dataset.columnId);
+            
+            if (!taskId || !targetColumnId) return;
+            
+            // Find the task
+            const taskIndex = tasks.findIndex(t => t.id === taskId);
+            if (taskIndex === -1) return;
+            
+            const task = tasks[taskIndex];
+            const oldColumnId = task.columnId;
+            const oldColumnName = getColumnName(oldColumnId);
+            const newColumnName = getColumnName(targetColumnId);
+            
+            // Calculate new order
+            const targetColumnTasks = tasks.filter(t => t.boardId == currentBoardId && t.columnId == targetColumnId);
+            const newOrder = getInsertIndex(e.target, e.clientY);
+            
+            // Update task
+            task.columnId = targetColumnId;
+            task.order = newOrder;
+            task.updatedAt = new Date().toISOString();
+            
+            // Reorder tasks in both columns
+            reorderTasksInColumn(oldColumnId);
+            reorderTasksInColumn(targetColumnId);
+            
+            // Save to localStorage
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            
+            // Log activity
+            const boardName = boards.find(b => b.id == currentBoardId)?.name || 'Unknown Board';
+            pushActivity({
+                type: 'task_moved',
+                message: `Moved task '${task.title}' from '${oldColumnName}' → '${newColumnName}' in board '${boardName}'`,
+                details: { taskId, oldColumnId, newColumnId: targetColumnId, boardId: currentBoardId }
+            });
+            
+            // Re-render
+            loadKanbanData();
+        }
+
+        function getInsertIndex(column, clientY) {
+            const tasks = column.querySelectorAll('.kanban-task:not(.dragging)');
+            let insertIndex = tasks.length;
+            
+            for (let i = 0; i < tasks.length; i++) {
+                const rect = tasks[i].getBoundingClientRect();
+                const middle = rect.top + rect.height / 2;
+                
+                if (clientY < middle) {
+                    insertIndex = i;
+                    break;
+                }
+            }
+            
+            return insertIndex;
+        }
+
+        function reorderTasksInColumn(columnId) {
+            const columnTasks = tasks.filter(t => t.boardId == currentBoardId && t.columnId == columnId);
+            columnTasks.sort((a, b) => a.order - b.order);
+            
+            columnTasks.forEach((task, index) => {
+                task.order = index;
+            });
+        }
+
+        function getColumnName(columnId) {
+            const currentBoard = boards.find(b => b.id == currentBoardId);
+            if (!currentBoard) return 'Unknown';
+            
+            const column = currentBoard.columns.find(c => c.id == columnId);
+            return column ? column.name : 'Unknown';
+        }
+
+        // ========================================
+        // ENHANCED TASK MANAGEMENT
+        // ========================================
+
+        function showTaskModal(isEdit = false, taskId = null, columnId = null) {
+            const modal = document.getElementById('task-modal');
+            const title = document.getElementById('task-modal-title');
+            const form = document.getElementById('task-form');
+            
+            updateWorkspaceDropdowns();
+            
+            if (isEdit && taskId) {
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    title.textContent = 'Edit Task';
+                    document.getElementById('task-title').value = task.title;
+                    document.getElementById('task-description').value = task.description;
+                    document.getElementById('task-workspace').value = task.workspaceId;
+                    document.getElementById('task-priority').value = task.priority;
+                    document.getElementById('task-due-date').value = task.dueDate;
+                    document.getElementById('task-status').value = task.status;
+                    editingTaskId = taskId;
+                }
+            } else {
+                title.textContent = 'Create New Task';
+                form.reset();
+                document.getElementById('task-priority').value = 'medium';
+                document.getElementById('task-status').value = 'todo';
+                editingTaskId = null;
+                
+                // Set default column if creating from Kanban
+                if (columnId) {
+                    const column = boards.find(b => b.id == currentBoardId)?.columns.find(c => c.id == columnId);
+                    if (column) {
+                        document.getElementById('task-status').value = column.name.toLowerCase().replace(' ', '-');
+                    }
+                }
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function hideTaskModal() {
+            const modal = document.getElementById('task-modal');
+            modal.classList.remove('show');
+            editingTaskId = null;
+        }
+
+        function saveTask(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const taskData = {
+                title: formData.get('title'),
+                description: formData.get('description'),
+                workspaceId: parseInt(formData.get('workspace')),
+                priority: formData.get('priority'),
+                dueDate: formData.get('dueDate'),
+                status: formData.get('status')
+            };
+
+            if (editingTaskId) {
+                // Update existing task
+                const index = tasks.findIndex(t => t.id === editingTaskId);
+                if (index !== -1) {
+                    const oldTask = tasks[index];
+                    tasks[index] = { ...oldTask, ...taskData, updatedAt: new Date().toISOString() };
+                    
+                    pushActivity({
+                        type: 'task_updated',
+                        message: `Task '${taskData.title}' updated`,
+                        details: { taskId: editingTaskId, changes: taskData }
+                    });
+                }
+            } else {
+                // Create new task
+                const newTask = {
+                    id: Date.now(),
+                    ...taskData,
+                    boardId: parseInt(currentBoardId),
+                    columnId: getColumnIdFromStatus(taskData.status),
+                    order: tasks.filter(t => t.boardId == currentBoardId && t.columnId == getColumnIdFromStatus(taskData.status)).length,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                tasks.push(newTask);
+                
+                pushActivity({
+                    type: 'task_created',
+                    message: `Task '${taskData.title}' created`,
+                    details: { taskId: newTask.id, workspaceId: taskData.workspaceId }
+                });
+            }
+
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            loadKanbanData();
+            hideTaskModal();
+        }
+
+        function getColumnIdFromStatus(status) {
+            const currentBoard = boards.find(b => b.id == currentBoardId);
+            if (!currentBoard) return null;
+            
+            const statusMap = {
+                'todo': 'To Do',
+                'in-progress': 'In Progress',
+                'done': 'Done'
+            };
+            
+            const columnName = statusMap[status] || status;
+            const column = currentBoard.columns.find(c => c.name.toLowerCase() === columnName.toLowerCase());
+            return column ? column.id : currentBoard.columns[0].id;
+        }
+
+        function deleteTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            if (confirm(`Are you sure you want to delete the task "${task.title}"?`)) {
+                tasks = tasks.filter(t => t.id !== taskId);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                
+                pushActivity({
+                    type: 'task_deleted',
+                    message: `Task '${task.title}' deleted`,
+                    details: { taskId, workspaceId: task.workspaceId }
+                });
+                
+                loadKanbanData();
+            }
+        }
+
+        // ========================================
+        // ENHANCED ACTIVITY SYSTEM
+        // ========================================
+
+        function loadActivityData() {
+            const container = document.querySelector('.activity-list');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            activityLog.forEach(activity => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                activityItem.onclick = () => focusActivityItem(activity);
+                
+                const timeAgo = getTimeAgo(new Date(activity.timestamp));
+                const userInitials = activity.user.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                activityItem.innerHTML = `
+                    <div class="activity-avatar">${userInitials}</div>
+                    <div class="activity-content">
+                        <div class="activity-message">${activity.message}</div>
+                        <div class="activity-time">${timeAgo}</div>
+                    </div>
+                    <button class="activity-details-btn" onclick="event.stopPropagation(); showActivityDetails(${activity.id})">
+                        Details
+                    </button>
+                `;
+                
+                container.appendChild(activityItem);
+            });
+        }
+
+        function focusActivityItem(activity) {
+            // Try to focus the related item
+            if (activity.details.taskId) {
+                // Switch to Kanban and open task edit modal
+                navigateToPage('kanban');
+                setTimeout(() => {
+                    showTaskModal(true, activity.details.taskId);
+                }, 100);
+            } else if (activity.details.boardId) {
+                // Switch to Kanban and select the board
+                navigateToPage('kanban');
+                setTimeout(() => {
+                    currentBoardId = activity.details.boardId;
+                    localStorage.setItem('currentBoardId', currentBoardId);
+                    document.getElementById('board-select').value = currentBoardId;
+                    loadKanbanData();
+                }, 100);
+            }
+        }
+
+        function showActivityDetails(activityId) {
+            const activity = activityLog.find(a => a.id === activityId);
+            if (!activity) return;
+            
+            const details = JSON.stringify(activity.details, null, 2);
+            alert(`Activity Details:\n\n${activity.message}\n\nDetails:\n${details}\n\nTime: ${new Date(activity.timestamp).toLocaleString()}`);
+        }
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+
+        function initializeWorkspaceAndTaskManagement() {
+            initializeDefaultWorkspaces();
+            initializeDefaultBoards();
+            initializeDefaultTasks();
+            renderWorkspaces();
+            renderBoardsDropdown();
+            updateWorkspaceDropdowns();
+            setupWorkspaceEventListeners();
+            setupTaskEventListeners();
+            setupBoardEventListeners();
+            loadKanbanData();
+            
+            // Update board action button states
+            const editBoardBtn = document.getElementById('edit-board-btn');
+            const deleteBoardBtn = document.getElementById('delete-board-btn');
+            const hasBoard = !!currentBoardId;
+            if (editBoardBtn) editBoardBtn.disabled = !hasBoard;
+            if (deleteBoardBtn) deleteBoardBtn.disabled = !hasBoard;
         }
 
         // Run initialization
