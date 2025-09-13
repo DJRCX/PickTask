@@ -494,23 +494,26 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo">
-                <div class="logo-icon">PT</div>
-                <div class="logo-text">PickTask</div>
-            </div>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#testimonials">Testimonials</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="nav-cta">
-                <a href="#" class="btn btn-secondary">Sign In</a>
-                <a href="#" class="btn btn-primary">Get Started</a>
-            </div>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="index.html" class="logo" aria-label="PickTask home">
+                <i class="fas fa-tasks" aria-hidden="true"></i>
+                PickTask
+            </a>
+            
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            
+            <ul class="nav-menu" id="nav-menu" role="menubar">
+                <li role="none"><a href="feature.html" role="menuitem">Features</a></li>
+                <li role="none"><a href="pricing.html" role="menuitem">Pricing</a></li>
+                <li role="none"><a href="tutorial.html" role="menuitem">Tutorials</a></li>
+                <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
+            </ul>
+            
+            <a href="#get-started" class="cta-nav" id="nav-cta">Get Started</a>
         </div>
     </nav>
 
@@ -659,50 +662,47 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-company">
-                    <div class="logo">
-                        <div class="logo-icon">PT</div>
-                        <div class="logo-text">PickTask</div>
-                    </div>
-                    <p>PickTask helps teams of all sizes organize their work, collaborate effectively, and achieve their goals faster with intuitive task management tools.</p>
+    <footer class="footer" id="contact" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>PickTask</h3>
+                    <p>Empowering teams worldwide with intelligent task management solutions. Built for the modern workplace, designed for maximum productivity and seamless collaboration.</p>
                 </div>
                 
-                <div class="footer-product">
-                    <h3 class="footer-heading">Product</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Integrations</a></li>
-                        <li><a href="#">Updates</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <nav aria-label="Product links">
+                        <a href="feature.html">Features</a>
+                        <a href="pricing.html">Pricing</a>
+                        <a href="#integrations">Integrations</a>
+                        <a href="documentation.html">Documentation</a>
+                    </nav>
                 </div>
                 
-                <div class="footer-resources">
-                    <h3 class="footer-heading">Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Tutorials</a></li>
-                        <li><a href="#">Community</a></li>
-                        <li><a href="#">Support</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <nav aria-label="Resource links">
+                        <a href="tutorial.html">Tutorials</a>
+                        <a href="help_support.html">Help & Support</a>
+                        <a href="#community">Community</a>
+                        <a href="#api">API Reference</a>
+                    </nav>
                 </div>
                 
-                <div class="footer-company-links">
-                    <h3 class="footer-heading">Company</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <nav aria-label="Company links">
+                        <a href="about_us.html">About Us</a>
+                        <a href="blog.html">Blog</a>
+                        <a href="#careers">Careers</a>
+                        <a href="contact.html">Contact</a>
+                    </nav>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023 PickTask. All rights reserved.</p>
+                <p>&copy; 2025 PickTask. All rights reserved. Built with <i class="fas fa-heart" style="color: var(--primary-teal);" aria-hidden="true"></i> for productive teams.</p>
             </div>
         </div>
     </footer>
