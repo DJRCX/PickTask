@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickTask</title>
+    <style>
+        :root {
+            --primary: #31c9c1;
+            --bg-dark: #071727;
+            --bg-light: #f9fafb;
+            --text-light: #ffffff;
+            --text-dark: #111827;
+            --border-color: #e5e7eb;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --primary: #31c9c1;
+            --bg-dark: #f9fafb;
+            --bg-light: #071727;
+            --text-light: #111827;
+            --text-dark: #ffffff;
+            --border-color: #1f2937;
+            --card-bg: #1f2937;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #auth-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--bg-dark);
+        }
+
+        #login-form-container, #signup-form-container {
+            background-color: rgba(0,0,0,0.2);
+            padding: 2rem;
+            border-radius: 8px;
+            width: 320px;
+            color: var(--text-light);
+        }
+
+        #login-form-container h2, #signup-form-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        #login-form, #signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        #login-form input, #signup-form input, #signup-form select {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        button {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--primary);
+            color: var(--text-light);
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #auth-container p {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        #auth-container a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* App Container */
+        #app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        #sidebar {
+            width: 250px;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .sidebar-header h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        #sidebar nav {
+            flex-grow: 1;
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #sidebar li a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        #sidebar li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #sidebar li a.active {
+            background-color: var(--primary);
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        .sidebar-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        #theme-toggle-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        #main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none; /* Hidden by default */
+        }
+
+        .content-section.active {
+            display: block; /* Shown when active */
+        }
+
+        /* Dashboard-specific styles */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        /* Kanban-specific styles */
+        .kanban-board {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .kanban-column {
+            flex: 1;
+            background-color: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .kanban-column h3 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .kanban-task {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="auth-container">
+        <div id="login-form-container">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="text" id="login-username" placeholder="Username" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+        </div>
+
+        <div id="signup-form-container" style="display: none;">
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <input type="text" id="signup-username" placeholder="Username" required>
+                <select id="signup-role" required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+        </div>
+    </div>
+
+    <div id="app-container" style="display: none;">
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <h2>PickTask</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+                    <li><a href="#workspace" class="nav-link">Workspace</a></li>
+                    <li><a href="#kanban" class="nav-link">Kanban</a></li>
+                    <li><a href="#calendar" class="nav-link">Calendar</a></li>
+                    <li><a href="#activity" class="nav-link">Activity</a></li>
+                    <li id="admin-panel-link" style="display: none;"><a href="#admin" class="nav-link">Admin Panel</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn">Logout</button>
+                <div id="theme-switcher">
+                    <button id="theme-toggle-btn">Toggle Theme</button>
+                </div>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <section id="home" class="content-section active">
+                <h1>Welcome to PickTask</h1>
+                <p>Select a section from the sidebar to get started.</p>
+            </section>
+            <section id="dashboard" class="content-section">
+                <h1>Dashboard</h1>
+                <div id="dashboard-content" class="dashboard-cards"></div>
+            </section>
+            <section id="workspace" class="content-section">
+                <h1>Workspace</h1>
+                <div id="workspace-content"></div>
+            </section>
+            <section id="kanban" class="content-section">
+                <h1>Kanban Board</h1>
+                <div id="kanban-content" class="kanban-board"></div>
+            </section>
+            <section id="calendar" class="content-section">
+                <h1>Calendar</h1>
+                <div id="calendar-content"></div>
+            </section>
+            <section id="activity" class="content-section">
+                <h1>Activity</h1>
+                <div id="activity-content"></div>
+            </section>
+            <section id="admin" class="content-section">
+                <h1>Admin Panel</h1>
+                <p>Manage users/workspaces</p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Apply theme immediately to prevent FOUC
+        const applyInitialTheme = () => {
+            const savedTheme = localStorage.getItem('picktask_theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        };
+        applyInitialTheme();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- App State ---
+            let users = [];
+            let workspaces = [];
+            let tasks = [];
+
+            // --- Data Initialization ---
+            const initializeMockData = () => {
+                const usersExist = getUsers().length > 0;
+                if (usersExist) { // Assume if users exist, all data exists
+                    workspaces = JSON.parse(localStorage.getItem('picktask_workspaces')) || [];
+                    tasks = JSON.parse(localStorage.getItem('picktask_tasks')) || [];
+                    return;
+                };
+
+                console.log('Initializing mock data...');
+
+                // Mock Users
+                const mockUsers = [
+                    { username: 'admin', role: 'admin', id: 1 },
+                    { username: 'jules', role: 'user', id: 2 }
+                ];
+                saveUsers(mockUsers);
+                users = mockUsers;
+
+                // Mock Workspaces
+                const mockWorkspaces = [
+                    { id: 1, name: 'Project Phoenix', ownerId: 1 },
+                    { id: 2, name: 'Marketing Campaign', ownerId: 1 }
+                ];
+                localStorage.setItem('picktask_workspaces', JSON.stringify(mockWorkspaces));
+                workspaces = mockWorkspaces;
+
+                // Mock Tasks
+                const mockTasks = [
+                    { id: 1, workspaceId: 1, title: 'Design new UI mockups', description: '', status: 'done', dueDate: new Date().toISOString().split('T')[0], assigneeId: 2 },
+                    { id: 2, workspaceId: 1, title: 'Develop authentication module', description: '', status: 'inprogress', dueDate: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString().split('T')[0], assigneeId: 2 },
+                    { id: 3, workspaceId: 1, title: 'Set up CI/CD pipeline', description: '', status: 'todo', dueDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0], assigneeId: 1 },
+                    { id: 4, workspaceId: 2, title: 'Draft blog post', description: '', status: 'todo', dueDate: new Date().toISOString().split('T')[0], assigneeId: 2 },
+                    { id: 5, workspaceId: 2, title: 'Create social media assets', description: '', status: 'todo', dueDate: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0], assigneeId: 1 },
+                ];
+                localStorage.setItem('picktask_tasks', JSON.stringify(mockTasks));
+                tasks = mockTasks;
+
+                // Mock Activities
+                const mockActivities = [
+                    { id: 1, message: 'Jules created task "Design new UI mockups"', timestamp: new Date() },
+                    { id: 2, message: 'Admin updated status of "Design new UI mockups" to Done', timestamp: new Date() },
+                ];
+                localStorage.setItem('picktask_activities', JSON.stringify(mockActivities));
+            };
+
+            initializeMockData();
+
+            // --- DOM Elements ---
+            const authContainer = document.getElementById('auth-container');
+            const appContainer = document.getElementById('app-container');
+
+            // Auth forms
+            const loginFormContainer = document.getElementById('login-form-container');
+            const signupFormContainer = document.getElementById('signup-form-container');
+            const showSignupLink = document.getElementById('show-signup');
+            const showLoginLink = document.getElementById('show-login');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+
+            // Sidebar and navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            // --- LocalStorage Helper Functions ---
+            const getUsers = () => JSON.parse(localStorage.getItem('picktask_users')) || [];
+            const saveUsers = (users) => localStorage.setItem('picktask_users', JSON.stringify(users));
+            const getActiveUser = () => JSON.parse(localStorage.getItem('activeUser'));
+            const setActiveUser = (user) => localStorage.setItem('activeUser', JSON.stringify(user));
+            const clearActiveUser = () => localStorage.removeItem('activeUser');
+
+
+            // --- Data Access / CRUD Helpers ---
+            const getWorkspaces = () => JSON.parse(localStorage.getItem('picktask_workspaces')) || [];
+            const getTasks = () => JSON.parse(localStorage.getItem('picktask_tasks')) || [];
+            const getActivities = () => JSON.parse(localStorage.getItem('picktask_activities')) || [];
+            const logActivity = (message) => {
+                const activities = getActivities();
+                const newActivity = { id: Date.now(), message, timestamp: new Date() };
+                activities.unshift(newActivity); // Add to the beginning
+                localStorage.setItem('picktask_activities', JSON.stringify(activities.slice(0, 20))); // Keep last 20
+            };
+
+
+            // --- Content Rendering Functions ---
+
+            /**
+             * Renders the dashboard with summary statistics.
+             */
+            const renderDashboard = () => {
+                const tasks = getTasks();
+                const totalTasks = tasks.length;
+                const doneTasks = tasks.filter(t => t.status === 'done').length;
+                const completionPercentage = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+                const dueToday = tasks.filter(t => t.dueDate === new Date().toISOString().split('T')[0]).length;
+
+                const content = `
+                    <div class="card"><h3>Completion</h3><p>${completionPercentage}%</p></div>
+                    <div class="card"><h3>Active Tasks</h3><p>${totalTasks - doneTasks}</p></div>
+                    <div class="card"><h3>Due Today</h3><p>${dueToday}</p></div>
+                `;
+                document.getElementById('dashboard-content').innerHTML = content;
+            };
+
+            /**
+             * Renders the Kanban board, organizing tasks into columns by status.
+             */
+            const renderKanban = () => {
+                const tasks = getTasks();
+                const statuses = ['todo', 'inprogress', 'done'];
+                const content = statuses.map(status => `
+                    <div class="kanban-column">
+                        <h3>${status.charAt(0).toUpperCase() + status.slice(1)}</h3>
+                        ${tasks.filter(t => t.status === status).map(task => `
+                            <div class="kanban-task">
+                                <h4>${task.title}</h4>
+                                <p>Due: ${task.dueDate}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('');
+                document.getElementById('kanban-content').innerHTML = content;
+            };
+
+            /**
+             * Renders the list of workspaces.
+             */
+            const renderWorkspaces = () => {
+                const workspaces = getWorkspaces();
+                const content = `<ul>${workspaces.map(w => `<li>${w.name}</li>`).join('')}</ul>`;
+                document.getElementById('workspace-content').innerHTML = content;
+            };
+
+            /**
+             * Renders the calendar view, grouping tasks by due date.
+             */
+            const renderCalendar = () => {
+                const tasks = getTasks();
+                const tasksByDate = tasks.reduce((acc, task) => {
+                    (acc[task.dueDate] = acc[task.dueDate] || []).push(task);
+                    return acc;
+                }, {});
+
+                const content = Object.keys(tasksByDate).sort().map(date => `
+                    <div>
+                        <h4>${new Date(date).toDateString()}</h4>
+                        <ul>
+                            ${tasksByDate[date].map(task => `<li>${task.title}</li>`).join('')}
+                        </ul>
+                    </div>
+                `).join('');
+                document.getElementById('calendar-content').innerHTML = content || '<p>No tasks with due dates.</p>';
+            };
+
+            /**
+             * Renders the activity feed.
+             */
+            const renderActivity = () => {
+                const activities = getActivities();
+                const content = `<ul>${activities.map(act => `<li>${act.message} - <small>${new Date(act.timestamp).toLocaleString()}</small></li>`).join('')}</ul>`;
+                document.getElementById('activity-content').innerHTML = content;
+            };
+
+            /**
+             * A master function to render all dynamic content in the app.
+             */
+            const renderAppContent = () => {
+                renderDashboard();
+                renderKanban();
+                renderWorkspaces();
+                renderCalendar();
+                renderActivity();
+            };
+
+
+            // --- UI Update Functions ---
+            const showApp = (user) => {
+                renderAppContent();
+                authContainer.style.display = 'none';
+                appContainer.style.display = 'flex';
+
+                // Role-based UI updates
+                const adminPanelLink = document.getElementById('admin-panel-link');
+                if (user.role === 'admin') {
+                    adminPanelLink.style.display = 'block';
+                } else {
+                    adminPanelLink.style.display = 'none';
+                }
+            };
+
+            const showAuth = () => {
+                appContainer.style.display = 'none';
+                authContainer.style.display = 'flex';
+                loginFormContainer.style.display = 'block';
+                signupFormContainer.style.display = 'none';
+
+                // Hide admin link on logout
+                document.getElementById('admin-panel-link').style.display = 'none';
+            };
+
+            // --- Authentication Logic ---
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('signup-username').value.trim();
+                const role = document.getElementById('signup-role').value;
+
+                if (users.find(u => u.username === username)) {
+                    alert('Username already exists!');
+                    return;
+                }
+
+                const newUser = { username, role, id: Date.now() };
+                users.push(newUser);
+                saveUsers(users);
+
+                setActiveUser(newUser);
+                showApp(newUser);
+            });
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('login-username').value.trim();
+                const user = users.find(u => u.username === username);
+
+                if (user) {
+                    setActiveUser(user);
+                    showApp(user);
+                } else {
+                    alert('User not found!');
+                }
+            });
+
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                clearActiveUser();
+                showAuth();
+            });
+
+            // --- Initial Load ---
+            const checkLoginState = () => {
+                const activeUser = getActiveUser();
+                if (activeUser) {
+                    showApp(activeUser);
+                    const lastPage = localStorage.getItem('picktask_activePage') || '#home';
+                    navigateTo(lastPage);
+                } else {
+                    showAuth();
+                }
+            };
+
+
+            // --- UI Interactions ---
+
+            // Toggle between login and signup forms
+            showSignupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginFormContainer.style.display = 'none';
+                signupFormContainer.style.display = 'block';
+            });
+
+            showLoginLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                signupFormContainer.style.display = 'none';
+                loginFormContainer.style.display = 'block';
+            });
+
+            // --- SPA Navigation ---
+            const navigateTo = (hash) => {
+                const targetId = hash.substring(1);
+
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+
+                navLinks.forEach(navLink => {
+                    navLink.classList.remove('active');
+                    if (navLink.getAttribute('href') === hash) {
+                        navLink.classList.add('active');
+                    }
+                });
+
+                localStorage.setItem('picktask_activePage', hash);
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navigateTo(link.getAttribute('href'));
+                });
+            });
+
+            // Initial call to set the app state
+            checkLoginState();
+
+            // --- Theme Switcher ---
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('picktask_theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('picktask_theme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
