@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - PickTask Task Management</title>
+    <meta name="description" content="Get in touch with PickTask. Contact our support team, schedule a demo, or reach out for enterprise solutions.">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #071727;
+            --primary-teal: #31c9c1;
+            --primary-green: #68e4b8;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            font-size: 16px;
+        }
+
+        /* Skip to main content for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-teal);
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            z-index: 2000;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--primary-teal);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a:focus {
+            color: var(--primary-teal);
+            background: var(--gray-50);
+            outline: none;
+        }
+
+        .nav-menu a.active {
+            color: var(--primary-teal);
+            background: var(--gray-100);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+
+        .mobile-menu-toggle:hover,
+        .mobile-menu-toggle:focus {
+            background: var(--gray-100);
+            outline: 2px solid var(--primary-teal);
+            outline-offset: 2px;
+        }
+
+        .cta-nav {
+            background: var(--primary-teal);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .cta-nav:hover,
+        .cta-nav:focus {
+            background: #2bb5ad;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+            outline: 2px solid var(--primary-teal);
+            outline-offset: 2px;
+        }
+
+        /* Contact Hero Section */
+        .contact-hero {
+            background: linear-gradient(125deg, var(--gray-50) 0%, var(--white) 60%, var(--gray-50) 100%);
+            padding: 3rem 1rem 4rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 40%;
+            height: 120%;
+            background: radial-gradient(ellipse at center, rgba(49, 201, 193, 0.05) 0%, transparent 70%);
+            transform: rotate(15deg);
+        }
+
+        .contact-hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+        }
+
+        .contact-hero p {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Contact Methods Grid */
+        .contact-methods {
+            padding: 4rem 1rem;
+            background: var(--white);
+        }
+
+        .contact-methods-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .contact-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-100);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .contact-card p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-link {
+            color: var(--primary-teal);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .contact-link:hover {
+            text-decoration: underline;
+            transform: translateX(5px);
+        }
+
+        /* Main Contact Section */
+        .main-contact {
+            padding: 4rem 1rem;
+            background: var(--gray-50);
+        }
+
+        .main-contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-form-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-form-section h2 {
+            font-size: 2rem;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .contact-form-section p {
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: var(--white);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(49, 201, 193, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-checkbox input {
+            margin-top: 0.25rem;
+        }
+
+        .form-checkbox label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .form-checkbox label a {
+            color: var(--primary-teal);
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            background: var(--primary-teal);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background: #2bb5ad;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:disabled {
+            background: var(--gray-400);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Contact Info Section */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .info-item:hover {
+            background: var(--gray-50);
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-teal);
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-text strong {
+            display: block;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .info-text span {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        /* Map Section */
+        .map-section {
+            padding: 4rem 1rem;
+            background: var(--white);
+        }
+
+        .map-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .map-container h2 {
+            font-size: 2rem;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .map-container p {
+            color: var(--gray-600);
+            margin-bottom: 3rem;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(49, 201, 193, 0.1), rgba(104, 228, 184, 0.1));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-teal);
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: 1px solid var(--gray-200);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 4rem 1rem;
+            background: var(--gray-50);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            user-select: none;
+            background: var(--white);
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .faq-question:hover {
+            background: var(--gray-50);
+            color: var(--primary-teal);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: var(--primary-teal);
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            color: var(--gray-600);
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 1.5rem;
+        }
+
+        .faq-answer.active {
+            max-height: 200px;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-900);
+            color: white;
+            padding: 4rem 1rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-teal);
+        }
+
+        .footer-brand p {
+            line-height: 1.6;
+            color: var(--gray-400);
+        }
+
+        .footer-section h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--gray-400);
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            transition: color 0.2s ease;
+            padding: 0.25rem 0;
+        }
+
+        .footer-section a:hover,
+        .footer-section a:focus {
+            color: var(--primary-teal);
+            outline: none;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--gray-700);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--gray-400);
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 300px;
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                border-top: 1px solid var(--gray-200);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow-lg);
+            }
+
+            .nav-menu.open {
+                display: flex;
+            }
+
+            .nav-menu a {
+                padding: 1rem;
+                border-radius: 6px;
+                text-align: center;
+            }
+
+            .contact-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .main-contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-form-section {
+                padding: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-hero h1 {
+                font-size: 2rem;
+            }
+
+            .contact-form-section {
+                padding: 1.5rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Focus and accessibility improvements */
+        :focus-visible {
+            outline: 2px solid var(--primary-teal);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* Form validation styles */
+        .form-input.error,
+        .form-textarea.error,
+        .form-select.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to main content -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="#" class="logo" aria-label="PickTask home">
+                <i class="fas fa-tasks" aria-hidden="true"></i>
+                PickTask
+            </a>
+            
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            
+            <ul class="nav-menu" id="nav-menu" role="menubar">
+                <li role="none"><a href="#features" role="menuitem">Features</a></li>
+                <li role="none"><a href="#pricing" role="menuitem">Pricing</a></li>
+                <li role="none"><a href="#contact" role="menuitem" class="active">Contact</a></li>
+            </ul>
+            
+            <a href="#get-started" class="cta-nav" id="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Contact Hero Section -->
+        <section class="contact-hero" aria-labelledby="contact-hero-title">
+            <div class="contact-hero-container">
+                <h1 id="contact-hero-title">Get in Touch</h1>
+                <p>We're here to help you succeed with PickTask. Whether you need support, want to schedule a demo, or have questions about our features, we'd love to hear from you.</p>
+            </div>
+        </section>
+
+        <!-- Contact Methods -->
+        <section class="contact-methods">
+            <div class="contact-methods-container">
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>Customer Support</h3>
+                        <p>Get help with your PickTask account, troubleshooting, or general questions.</p>
+                        <a href="mailto:support@picktask.com" class="contact-link">
+                            <i class="fas fa-envelope"></i>
+                            support@picktask.com
+                        </a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Schedule a Demo</h3>
+                        <p>See PickTask in action with a personalized demo tailored to your team's needs.</p>
+                        <a href="#schedule-demo" class="contact-link">
+                            <i class="fas fa-video"></i>
+                            Book a Demo
+                        </a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Enterprise Sales</h3>
+                        <p>Discuss enterprise solutions, custom integrations, and volume pricing.</p>
+                        <a href="mailto:sales@picktask.com" class="contact-link">
+                            <i class="fas fa-handshake"></i>
+                            sales@picktask.com
+                        </a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Community</h3>
+                        <p>Connect with other PickTask users, share tips, and get peer support.</p>
+                        <a href="#community" class="contact-link">
+                            <i class="fas fa-comments"></i>
+                            Join Community
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Contact Section -->
+        <section class="main-contact">
+            <div class="main-contact-container">
+                <!-- Contact Form -->
+                <div class="contact-form-section">
+                    <h2>Send us a Message</h2>
+                    <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+                    
+                    <form id="contact-form" novalidate>
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name *</label>
+                            <input type="text" id="name" name="name" class="form-input" required>
+                            <div class="error-message">Please enter your full name.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address *</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                            <div class="error-message">Please enter a valid email address.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company" class="form-label">Company</label>
+                            <input type="text" id="company" name="company" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject" class="form-label">Subject *</label>
+                            <select id="subject" name="subject" class="form-select" required>
+                                <option value="">Select a topic...</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="demo">Schedule Demo</option>
+                                <option value="enterprise">Enterprise Sales</option>
+                                <option value="billing">Billing Question</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="partnership">Partnership</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="error-message">Please select a subject.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message" class="form-label">Message *</label>
+                            <textarea id="message" name="message" class="form-textarea" placeholder="Tell us how we can help you..." required></textarea>
+                            <div class="error-message">Please enter your message.</div>
+                        </div>
+
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <label for="newsletter">I'd like to receive updates about new features and product news.</label>
+                        </div>
+
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="privacy" name="privacy" required>
+                            <label for="privacy">I agree to the <a href="#privacy-policy">Privacy Policy</a> and <a href="#terms">Terms of Service</a> *</label>
+                            <div class="error-message">Please accept the privacy policy and terms.</div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="contact-info">
+                    <div class="info-card">
+                        <h3>Contact Information</h3>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Email</strong>
+                                <span>hello@picktask.com</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Phone</strong>
+                                <span>+1 (555) 123-4567</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Address</strong>
+                                <span>123 Business Ave, Suite 100<br>San Francisco, CA 94105</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Support Hours</strong>
+                                <span>Mon-Fri: 9am-6pm PST<br>Sat-Sun: 10am-4pm PST</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Follow Us</h3>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Twitter</strong>
+                                <span>@PickTaskApp</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fab fa-linkedin"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>LinkedIn</strong>
+                                <span>linkedin.com/company/picktask</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>GitHub</strong>
+                                <span>github.com/picktask</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Response Times</h3>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>General Inquiries</strong>
+                                <span>Within 24 hours</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Support Tickets</strong>
+                                <span>Within 4 hours</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="info-text">
+                                <strong>Critical Issues</strong>
+                                <span>Within 1 hour</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section">
+            <div class="map-container">
+                <h2>Visit Our Office</h2>
+                <p>Located in the heart of San Francisco, our office is always open to our clients and partners.</p>
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-right: 1rem;"></i>
+                    Interactive Map Coming Soon
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="faq-container">
+                <div class="section-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Quick answers to common questions about contacting us</p>
+                </div>
+                
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            How quickly will I get a response?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            We aim to respond to all inquiries within 24 hours during business days. For urgent support issues, our team typically responds within 4 hours. Critical technical issues are prioritized and addressed within 1 hour.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            What's the best way to contact support?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            For technical support issues, email support@picktask.com with detailed information about your problem. For general questions, you can use this contact form or reach out to hello@picktask.com.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            Can I schedule a phone call?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            Yes! We offer phone consultations for enterprise clients and demo requests. Use our demo scheduling link or mention in your message that you'd prefer a phone call, and we'll coordinate a time that works for you.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            Do you offer on-site support?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            For enterprise customers with 100+ users, we can arrange on-site implementation and training sessions. Contact our enterprise sales team at sales@picktask.com to discuss your specific needs.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            Is there a community forum?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            Yes! Our community forum is a great place to connect with other PickTask users, share tips, and get peer support. You can also find tutorials, best practices, and feature announcements there.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>PickTask</h3>
+                    <p>Empowering teams worldwide with intelligent task management solutions. Built for the modern workplace, designed for maximum productivity and seamless collaboration.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <nav aria-label="Product links">
+                        <a href="#features">Features</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="#integrations">Integrations</a>
+                        <a href="#updates">Updates</a>
+                    </nav>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <nav aria-label="Resource links">
+                        <a href="#docs">Documentation</a>
+                        <a href="#tutorials">Tutorials</a>
+                        <a href="#community">Community</a>
+                        <a href="#api">API Reference</a>
+                    </nav>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <nav aria-label="Company links">
+                        <a href="#about">About Us</a>
+                        <a href="#blog">Blog</a>
+                        <a href="#careers">Careers</a>
+                        <a href="#contact">Contact</a>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 PickTask. All rights reserved. Built with passion for productivity.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced Contact Page JavaScript
+        class PickTaskContactUI {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.setupNavigation();
+                this.setupMobileMenu();
+                this.setupSmoothScrolling();
+                this.setupFormValidation();
+                this.setupFAQ();
+                this.setupAccessibility();
+                this.setupAnimations();
+            }
+
+            // Navigation with scroll behavior
+            setupNavigation() {
+                const navbar = document.getElementById('navbar');
+                let lastScrollY = window.scrollY;
+                let ticking = false;
+
+                const updateNavbar = () => {
+                    const scrollY = window.scrollY;
+                    
+                    if (scrollY > 10) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+
+                    lastScrollY = scrollY;
+                    ticking = false;
+                };
+
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        requestAnimationFrame(updateNavbar);
+                        ticking = true;
+                    }
+                }, { passive: true });
+            }
+
+            // Mobile menu functionality
+            setupMobileMenu() {
+                const toggle = document.getElementById('mobile-menu-toggle');
+                const menu = document.getElementById('nav-menu');
+
+                if (toggle && menu) {
+                    toggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const isOpen = menu.classList.contains('open');
+                        
+                        menu.classList.toggle('open');
+                        toggle.setAttribute('aria-expanded', !isOpen);
+                        toggle.querySelector('i').className = isOpen ? 'fas fa-bars' : 'fas fa-times';
+                        
+                        document.body.style.overflow = isOpen ? 'auto' : 'hidden';
+                    });
+
+                    document.addEventListener('click', (e) => {
+                        if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+                            menu.classList.remove('open');
+                            toggle.setAttribute('aria-expanded', 'false');
+                            toggle.querySelector('i').className = 'fas fa-bars';
+                            document.body.style.overflow = 'auto';
+                        }
+                    });
+                }
+            }
+
+            // Smooth scrolling
+            setupSmoothScrolling() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = anchor.getAttribute('href').substring(1);
+                        const target = document.getElementById(targetId);
+                        
+                        if (target) {
+                            const navbar = document.getElementById('navbar');
+                            const offset = navbar ? navbar.offsetHeight + 20 : 20;
+                            const targetPosition = target.offsetTop - offset;
+                            
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+
+                            target.focus({ preventScroll: true });
+                        }
+                    });
+                });
+            }
+
+            // Form validation and submission
+            setupFormValidation() {
+                const form = document.getElementById('contact-form');
+                if (!form) return;
+
+                const validateField = (field) => {
+                    const value = field.value.trim();
+                    const type = field.type;
+                    const required = field.hasAttribute('required');
+                    let isValid = true;
+                    let errorMessage = '';
+
+                    // Clear previous errors
+                    field.classList.remove('error');
+                    const errorEl = field.parentNode.querySelector('.error-message');
+                    if (errorEl) errorEl.classList.remove('show');
+
+                    if (required && !value) {
+                        isValid = false;
+                        errorMessage = `${field.labels[0].textContent.replace(' *', '')} is required.`;
+                    } else if (value) {
+                        if (type === 'email' && !this.isValidEmail(value)) {
+                            isValid = false;
+                            errorMessage = 'Please enter a valid email address.';
+                        }
+                    }
+
+                    if (!isValid) {
+                        field.classList.add('error');
+                        if (errorEl) {
+                            errorEl.textContent = errorMessage;
+                            errorEl.classList.add('show');
+                        }
+                    }
+
+                    return isValid;
+                };
+
+                // Real-time validation
+                form.querySelectorAll('input, textarea, select').forEach(field => {
+                    field.addEventListener('blur', () => validateField(field));
+                    field.addEventListener('input', () => {
+                        if (field.classList.contains('error')) {
+                            validateField(field);
+                        }
+                    });
+                });
+
+                // Form submission
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const fields = form.querySelectorAll('input, textarea, select');
+                    let isFormValid = true;
+
+                    fields.forEach(field => {
+                        if (!validateField(field)) {
+                            isFormValid = false;
+                        }
+                    });
+
+                    // Check privacy policy
+                    const privacyCheckbox = document.getElementById('privacy');
+                    if (privacyCheckbox && !privacyCheckbox.checked) {
+                        isFormValid = false;
+                        const errorEl = privacyCheckbox.closest('.form-checkbox').querySelector('.error-message');
+                        if (errorEl) {
+                            errorEl.classList.add('show');
+                        }
+                    }
+
+                    if (isFormValid) {
+                        this.submitForm(form);
+                    } else {
+                        // Focus on first error field
+                        const firstError = form.querySelector('.error');
+                        if (firstError) {
+                            firstError.focus();
+                        }
+                    }
+                });
+            }
+
+            isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            async submitForm(form) {
+                const submitBtn = document.getElementById('submit-btn');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+                try {
+                    // Simulate form submission
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    this.showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
+                    form.reset();
+                    
+                    // Track form submission
+                    this.trackEvent('Contact_Form_Submit', {
+                        subject: form.subject.value,
+                        company: form.company.value || 'Not provided'
+                    });
+
+                } catch (error) {
+                    this.showNotification('Failed to send message. Please try again.', 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            }
+
+            // FAQ functionality
+            setupFAQ() {
+                const faqQuestions = document.querySelectorAll('.faq-question');
+                
+                faqQuestions.forEach((question, index) => {
+                    question.addEventListener('click', () => {
+                        this.toggleFAQ(index);
+                    });
+
+                    question.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.toggleFAQ(index);
+                        }
+                    });
+
+                    question.setAttribute('tabindex', '0');
+                    question.setAttribute('role', 'button');
+                });
+            }
+
+            toggleFAQ(index) {
+                const question = document.querySelectorAll('.faq-question')[index];
+                const answer = document.querySelectorAll('.faq-answer')[index];
+                
+                const isActive = question.classList.contains('active');
+                
+                // Close all other FAQs
+                document.querySelectorAll('.faq-question').forEach((q, i) => {
+                    if (i !== index) {
+                        q.classList.remove('active');
+                        q.setAttribute('aria-expanded', 'false');
+                        const a = document.querySelectorAll('.faq-answer')[i];
+                        a.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current FAQ
+                if (isActive) {
+                    question.classList.remove('active');
+                    answer.classList.remove('active');
+                    question.setAttribute('aria-expanded', 'false');
+                } else {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                    question.setAttribute('aria-expanded', 'true');
+                }
+
+                this.trackEvent('FAQ_Toggle', {
+                    question: question.textContent.trim(),
+                    action: isActive ? 'close' : 'open'
+                });
+            }
+
+            // Enhanced accessibility
+            setupAccessibility() {
+                const skipLink = document.querySelector('.skip-link');
+                if (skipLink) {
+                    skipLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const target = document.querySelector(skipLink.getAttribute('href'));
+                        if (target) {
+                            target.focus();
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
+                }
+
+                // Keyboard navigation for interactive elements
+                const interactiveElements = document.querySelectorAll('.contact-card, .info-item');
+                interactiveElements.forEach(element => {
+                    element.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            const link = element.querySelector('a');
+                            if (link) link.click();
+                        }
+                    });
+                });
+            }
+
+            // Animation observers
+            setupAnimations() {
+                if ('IntersectionObserver' in window) {
+                    const observerOptions = {
+                        threshold: 0.1,
+                        rootMargin: '0px 0px -100px 0px'
+                    };
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.style.opacity = '1';
+                                entry.target.style.transform = 'translateY(0)';
+                            }
+                        });
+                    }, observerOptions);
+
+                    const animatedElements = document.querySelectorAll('.contact-card, .info-card');
+                    animatedElements.forEach(element => {
+                        element.style.opacity = '0.7';
+                        element.style.transform = 'translateY(30px)';
+                        element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                        observer.observe(element);
+                    });
+                }
+            }
+
+            // Analytics tracking
+            trackEvent(eventName, properties = {}) {
+                console.log(`Contact Page Event: ${eventName}`, properties);
+                // Integration with analytics service would go here
+            }
+
+            // Notification system
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                `;
+
+                document.body.appendChild(notification);
+
+                requestAnimationFrame(() => {
+                    notification.classList.add('show');
+                });
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 4000);
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                new PickTaskContactUI();
+            });
+        } else {
+            new PickTaskContactUI();
+        }
+
+        // Close mobile menu on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const menu = document.getElementById('nav-menu');
+                const toggle = document.getElementById('mobile-menu-toggle');
+                if (menu && menu.classList.contains('open')) {
+                    menu.classList.remove('open');
+                    if (toggle) {
+                        toggle.setAttribute('aria-expanded', 'false');
+                        const icon = toggle.querySelector('i');
+                        if (icon) icon.className = 'fas fa-bars';
+                        toggle.focus();
+                    }
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,820 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickTask - Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #31c9c1;
+            --bg-dark: #071727;
+            --bg-light: #f9fafb;
+            --text-light: #ffffff;
+            --text-dark: #111827;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+        
+        /* Login Form Styles */
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            padding: 2rem;
+        }
+        
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(49, 201, 193, 0.1);
+        }
+        
+        .form-submit {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .form-submit:hover {
+            background: #2bb5ad;
+        }
+        
+        .form-toggle {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .form-toggle a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+        
+        .sidebar-logo i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+        }
+        
+        .nav-item.active {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+        
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .logout-btn {
+            margin-top: auto;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            background: var(--bg-light);
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        
+        .page-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            min-height: 300px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 1.5rem 0.5rem;
+            }
+            
+            .sidebar-logo span, 
+            .nav-item span,
+            .logout-btn span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+        
+        /* Hide sidebar and show login by default */
+        .sidebar, .main-content {
+            display: none;
+        }
+        
+        .login-container {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form (shown by default) -->
+    <div class="login-container" id="loginContainer">
+        <form class="login-form" id="loginForm">
+            <h2 class="form-title">Sign In to PickTask</h2>
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="form-submit">Sign In</button>
+            <div class="form-toggle">
+                Don't have an account? <a href="#" id="showSignup">Sign Up</a>
+            </div>
+        </form>
+        
+        <form class="login-form" id="signupForm" style="display: none;">
+            <h2 class="form-title">Create Account</h2>
+            <div class="form-group">
+                <label for="signupName" class="form-label">Full Name</label>
+                <input type="text" id="signupName" class="form-input" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label for="signupEmail" class="form-label">Email</label>
+                <input type="email" id="signupEmail" class="form-input" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword" class="form-label">Password</label>
+                <input type="password" id="signupPassword" class="form-input" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+                <label for="userRole" class="form-label">Role</label>
+                <select id="userRole" class="form-input" required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <button type="submit" class="form-submit">Create Account</button>
+            <div class="form-toggle">
+                Already have an account? <a href="#" id="showLogin">Sign In</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sidebar Navigation (hidden until login) -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-tasks"></i>
+            <span>PickTask</span>
+        </div>
+        
+        <div class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" data-page="dashboard">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-page="workspace">
+                <i class="fas fa-folder"></i>
+                <span>Workspace</span>
+            </a>
+            <a href="#" class="nav-item" data-page="kanban">
+                <i class="fas fa-columns"></i>
+                <span>Kanban</span>
+            </a>
+            <a href="#" class="nav-item" data-page="calendar">
+                <i class="fas fa-calendar"></i>
+                <span>Calendar</span>
+            </a>
+            <a href="#" class="nav-item" data-page="activity">
+                <i class="fas fa-bell"></i>
+                <span>Activity</span>
+            </a>
+            <!-- Admin Panel - hidden by default, shown only for admin users -->
+            <a href="#" class="nav-item" data-page="admin" id="adminLink" style="display: none;">
+                <i class="fas fa-user-shield"></i>
+                <span>Admin Panel</span>
+            </a>
+        </div>
+        
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+    </nav>
+
+    <!-- Main Content Area (hidden until login) -->
+    <main class="main-content" id="mainContent">
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="page-header">
+                <h1 class="page-title">Welcome to PickTask</h1>
+            </div>
+            <div class="page-content">
+                <h2>Hello, <span id="userName">User</span>!</h2>
+                <p>This is your home page. Use the sidebar to navigate between different sections of the application.</p>
+                <p>PickTask helps you organize tasks, collaborate with your team, and get work done faster with our intuitive platform.</p>
+                <div style="margin-top: 2rem; padding: 1rem; background: var(--bg-light); border-radius: 8px;">
+                    <h3>Quick Start Guide</h3>
+                    <ul style="margin-top: 1rem; line-height: 1.6;">
+                        <li>Go to <strong>Workspace</strong> to create and manage your projects</li>
+                        <li>Use <strong>Kanban</strong> to visualize your workflow</li>
+                        <li>Check the <strong>Calendar</strong> to see your deadlines</li>
+                        <li>Monitor your <strong>Activity</strong> to stay updated</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Page -->
+        <section id="dashboard" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+            </div>
+            <div class="page-content">
+                <h2>Your Dashboard</h2>
+                <p>Here you can see an overview of your tasks, projects, and team activity.</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                    <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                        <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;">12</h3>
+                        <p>Active Tasks</p>
+                    </div>
+                    <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                        <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;">5</h3>
+                        <p>Projects</p>
+                    </div>
+                    <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                        <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;">3</h3>
+                        <p>Due Today</p>
+                    </div>
+                    <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                        <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;">8</h3>
+                        <p>Team Members</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Workspace Page -->
+        <section id="workspace" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Workspace</h1>
+            </div>
+            <div class="page-content">
+                <h2>Your Workspaces</h2>
+                <p>Create, manage, and collaborate on projects within your workspaces.</p>
+                <div style="margin-top: 2rem;">
+                    <button style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600;">Create New Workspace</button>
+                </div>
+                <div style="margin-top: 2rem; display: grid; gap: 1rem;">
+                    <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                        <h3>Marketing Campaign</h3>
+                        <p>Q4 Product Launch</p>
+                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                            <span style="background: var(--bg-light); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">5 tasks</span>
+                            <span style="background: var(--bg-light); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">3 members</span>
+                        </div>
+                    </div>
+                    <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                        <h3>Website Redesign</h3>
+                        <p>Complete by December 15</p>
+                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                            <span style="background: var(--bg-light); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">12 tasks</span>
+                            <span style="background: var(--bg-light); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">5 members</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kanban Page -->
+        <section id="kanban" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Kanban Board</h1>
+            </div>
+            <div class="page-content">
+                <h2>Drag and Drop Your Tasks</h2>
+                <p>Visualize your workflow with our intuitive Kanban board.</p>
+                <div style="margin-top: 2rem; display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem;">
+                    <div style="min-width: 280px; background: var(--bg-light); padding: 1rem; border-radius: 8px;">
+                        <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">To Do</h3>
+                        <div style="background: white; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                            <h4>Design homepage mockup</h4>
+                            <p style="font-size: 0.875rem; color: var(--gray-700); margin-top: 0.5rem;">Due: Oct 15</p>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                            <h4>Write blog post</h4>
+                            <p style="font-size: 0.875rem; color: var(--gray-700); margin-top: 0.5rem;">Due: Oct 18</p>
+                        </div>
+                    </div>
+                    <div style="min-width: 280px; background: var(--bg-light); padding: 1rem; border-radius: 8px;">
+                        <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">In Progress</h3>
+                        <div style="background: white; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                            <h4>Develop contact form</h4>
+                            <p style="font-size: 0.875rem; color: var(--gray-700); margin-top: 0.5rem;">Due: Oct 12</p>
+                        </div>
+                    </div>
+                    <div style="min-width: 280px; background: var(--bg-light); padding: 1rem; border-radius: 8px;">
+                        <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">Review</h3>
+                        <div style="background: white; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                            <h4>Test user registration</h4>
+                            <p style="font-size: 0.875rem; color: var(--gray-700); margin-top: 0.5rem;">Due: Oct 10</p>
+                        </div>
+                    </div>
+                    <div style="min-width: 280px; background: var(--bg-light); padding: 1rem; border-radius: 8px;">
+                        <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">Done</h3>
+                        <div style="background: white; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                            <h4>Setup project repository</h4>
+                            <p style="font-size: 0.875rem; color: var(--gray-700); margin-top: 0.5rem;">Completed: Oct 5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Page -->
+        <section id="calendar" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Calendar</h1>
+            </div>
+            <div class="page-content">
+                <h2>Upcoming Deadlines & Events</h2>
+                <p>Stay on track with your schedule.</p>
+                <div style="margin-top: 2rem; background: white; padding: 2rem; border-radius: 8px; text-align: center;">
+                    <h3 style="margin-bottom: 2rem;">October 2023</h3>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; text-align: center;">
+                        <div><strong>Sun</strong></div>
+                        <div><strong>Mon</strong></div>
+                        <div><strong>Tue</strong></div>
+                        <div><strong>Wed</strong></div>
+                        <div><strong>Thu</strong></div>
+                        <div><strong>Fri</strong></div>
+                        <div><strong>Sat</strong></div>
+                        
+                        <div></div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                        <div>7</div>
+                        
+                        <div>8</div>
+                        <div>9</div>
+                        <div>10</div>
+                        <div style="background: var(--primary); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">11</div>
+                        <div>12</div>
+                        <div>13</div>
+                        <div>14</div>
+                        
+                        <div>15</div>
+                        <div>16</div>
+                        <div>17</div>
+                        <div>18</div>
+                        <div style="background: var(--primary); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">19</div>
+                        <div>20</div>
+                        <div>21</div>
+                        
+                        <div>22</div>
+                        <div>23</div>
+                        <div>24</div>
+                        <div>25</div>
+                        <div>26</div>
+                        <div>27</div>
+                        <div>28</div>
+                        
+                        <div>29</div>
+                        <div>30</div>
+                        <div>31</div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div style="margin-top: 2rem; text-align: left;">
+                        <h4>Events:</h4>
+                        <ul style="margin-top: 1rem; text-align: left;">
+                            <li><strong>Oct 11:</strong> Project review meeting</li>
+                            <li><strong>Oct 19:</strong> Client presentation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity Page -->
+        <section id="activity" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Activity</h1>
+            </div>
+            <div class="page-content">
+                <h2>Recent Activity</h2>
+                <p>Stay updated with the latest changes in your workspaces.</p>
+                <div style="margin-top: 2rem;">
+                    <div style="border-bottom: 1px solid var(--gray-200); padding: 1rem 0;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">JD</div>
+                            <div>
+                                <p><strong>John Doe</strong> completed task "Design homepage mockup"</p>
+                                <p style="font-size: 0.875rem; color: var(--gray-700);">2 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="border-bottom: 1px solid var(--gray-200); padding: 1rem 0;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; background: #68e4b8; color: var(--text-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">AS</div>
+                            <div>
+                                <p><strong>Alice Smith</strong> commented on task "Develop contact form"</p>
+                                <p style="font-size: 0.875rem; color: var(--gray-700);">4 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="border-bottom: 1px solid var(--gray-200); padding: 1rem 0;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; background: #f59e0b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">RK</div>
+                            <div>
+                                <p><strong>Robert Kim</strong> created new task "Write blog post"</p>
+                                <p style="font-size: 0.875rem; color: var(--gray-700);">1 day ago</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="border-bottom: 1px solid var(--gray-200); padding: 1rem 0;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; background: #ef4444; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">SJ</div>
+                            <div>
+                                <p><strong>Sarah Johnson</strong> assigned you to task "Test user registration"</p>
+                                <p style="font-size: 0.875rem; color: var(--gray-700);">2 days ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel Page -->
+        <section id="admin" class="page">
+            <div class="page-header">
+                <h1 class="page-title">Admin Panel</h1>
+            </div>
+            <div class="page-content">
+                <h2>Manage Users & Workspaces</h2>
+                <p>As an administrator, you have access to manage all users and workspaces.</p>
+                <div style="margin-top: 2rem; display: grid; gap: 1.5rem;">
+                    <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                        <h3>Manage Users</h3>
+                        <p>View, edit, and manage all user accounts in the system.</p>
+                        <button style="margin-top: 1rem; background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Manage Users</button>
+                    </div>
+                    <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                        <h3>Manage Workspaces</h3>
+                        <p>Create, edit, and manage all workspaces and their permissions.</p>
+                        <button style="margin-top: 1rem; background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Manage Workspaces</button>
+                    </div>
+                    <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                        <h3>System Settings</h3>
+                        <p>Configure system-wide settings and preferences.</p>
+                        <button style="margin-top: 1rem; background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">System Settings</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        class PickTaskApp {
+            constructor() {
+                this.currentUser = null;
+                this.init();
+            }
+
+            init() {
+                // Check if user is already logged in
+                this.checkLoginStatus();
+                
+                // Set up event listeners
+                this.setupEventListeners();
+            }
+
+            checkLoginStatus() {
+                // Check if there's an active user in localStorage
+                const activeUser = localStorage.getItem('activeUser');
+                if (activeUser) {
+                    this.currentUser = JSON.parse(activeUser);
+                    this.showApp();
+                } else {
+                    this.showLogin();
+                }
+            }
+
+            setupEventListeners() {
+                // Login form submission
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                // Signup form submission
+                document.getElementById('signupForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleSignup();
+                });
+
+                // Toggle between login and signup forms
+                document.getElementById('showSignup').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('signupForm').style.display = 'block';
+                });
+
+                document.getElementById('showLogin').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('signupForm').style.display = 'none';
+                    document.getElementById('loginForm').style.display = 'block';
+                });
+
+                // Logout button
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    this.handleLogout();
+                });
+
+                // Sidebar navigation
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const pageId = item.getAttribute('data-page');
+                        this.navigateToPage(pageId);
+                    });
+                });
+            }
+
+            handleLogin() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // In a real app, you would validate against a server
+                // For this demo, we'll use localStorage
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    // Save active user to localStorage
+                    localStorage.setItem('activeUser', JSON.stringify(user));
+                    this.currentUser = user;
+                    this.showApp();
+                } else {
+                    alert('Invalid email or password');
+                }
+            }
+
+            handleSignup() {
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const role = document.getElementById('userRole').value;
+                
+                // Get existing users
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // Check if user already exists
+                if (users.some(u => u.email === email)) {
+                    alert('User with this email already exists');
+                    return;
+                }
+                
+                // Create new user
+                const newUser = {
+                    name,
+                    email,
+                    password, // In a real app, never store plain text passwords
+                    role
+                };
+                
+                // Save to localStorage
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Automatically log in the new user
+                localStorage.setItem('activeUser', JSON.stringify(newUser));
+                this.currentUser = newUser;
+                this.showApp();
+            }
+
+            handleLogout() {
+                // Clear active user from localStorage
+                localStorage.removeItem('activeUser');
+                this.currentUser = null;
+                this.showLogin();
+            }
+
+            showApp() {
+                // Hide login container
+                document.getElementById('loginContainer').style.display = 'none';
+                
+                // Show sidebar and main content
+                document.getElementById('sidebar').style.display = 'flex';
+                document.getElementById('mainContent').style.display = 'block';
+                
+                // Update user name in home page
+                document.getElementById('userName').textContent = this.currentUser.name;
+                
+                // Handle admin panel visibility
+                if (this.currentUser.role === 'admin') {
+                    document.getElementById('adminLink').style.display = 'block';
+                } else {
+                    document.getElementById('adminLink').style.display = 'none';
+                }
+                
+                // Navigate to home page by default
+                this.navigateToPage('home');
+            }
+
+            showLogin() {
+                // Hide sidebar and main content
+                document.getElementById('sidebar').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'none';
+                
+                // Show login container
+                document.getElementById('loginContainer').style.display = 'block';
+                
+                // Reset forms
+                document.getElementById('loginForm').reset();
+                document.getElementById('signupForm').reset();
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('signupForm').style.display = 'none';
+            }
+
+            navigateToPage(pageId) {
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show selected page
+                document.getElementById(pageId).classList.add('active');
+                
+                // Update active state in sidebar
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add('active');
+            }
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new PickTaskApp();
+        });
+    </script>
+</body>
+</html>
+```

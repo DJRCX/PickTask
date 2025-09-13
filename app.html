@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickTask - Task Management App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #31c9c1;
+            --primary-dark: #2bb5ad;
+            --bg-dark: #071727;
+            --bg-light: #f9fafb;
+            --text-light: #ffffff;
+            --text-dark: #111827;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Auth Section */
+        #auth-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+            padding: 2rem 1rem;
+        }
+
+        body.dark-mode #auth-section {
+            background: linear-gradient(135deg, var(--gray-800) 0%, var(--bg-dark) 100%);
+        }
+
+        .auth-container {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .auth-container {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .auth-header h1 {
+            color: var(--text-light);
+        }
+
+        .auth-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        body.dark-mode .auth-header p {
+            color: var(--gray-400);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .auth-tabs {
+            border-color: var(--gray-700);
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray-500);
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .form-label {
+            color: var(--gray-300);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .form-input {
+            background-color: var(--gray-700);
+            border-color: var(--gray-600);
+            color: var(--text-light);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(49, 201, 193, 0.1);
+        }
+
+        .form-submit {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .form-submit:hover,
+        .form-submit:focus {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray-600);
+        }
+
+        body.dark-mode .auth-switch {
+            color: var(--gray-400);
+        }
+
+        .auth-switch a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* App Section */
+        #app-section {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: box-shadow 0.2s ease;
+        }
+
+        body.dark-mode .navbar {
+            background: var(--bg-dark);
+            border-color: var(--gray-700);
+        }
+
+        .navbar.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        body.dark-mode .logo {
+            color: var(--text-light);
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        body.dark-mode .nav-menu a {
+            color: var(--gray-300);
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a:focus {
+            color: var(--primary);
+            background: var(--gray-50);
+            outline: none;
+        }
+
+        body.dark-mode .nav-menu a:hover,
+        body.dark-mode .nav-menu a:focus {
+            background: var(--gray-700);
+        }
+
+        .nav-menu a.active {
+            color: var(--primary);
+            background: var(--gray-100);
+        }
+
+        body.dark-mode .nav-menu a.active {
+            background: var(--gray-700);
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .user-name {
+            color: var(--gray-300);
+        }
+
+        .logout-btn {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .logout-btn {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .logout-btn:hover {
+            background: var(--gray-200);
+            color: var(--gray-900);
+        }
+
+        body.dark-mode .logout-btn:hover {
+            background: var(--gray-600);
+            color: var(--text-light);
+        }
+
+        /* Home Section */
+        .home-section {
+            padding: 3rem 0;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .section-header h2 {
+            color: var(--text-light);
+        }
+
+        .section-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        body.dark-mode .section-header p {
+            color: var(--gray-400);
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .dashboard-card {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .card-title {
+            color: var(--gray-300);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .card-value {
+            color: var(--text-light);
+        }
+
+        .card-description {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .card-description {
+            color: var(--gray-400);
+        }
+
+        .recent-tasks {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .recent-tasks {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            transition: all 0.2s ease;
+        }
+
+        body.dark-mode .task-item {
+            border-color: var(--gray-700);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item:hover {
+            background: var(--gray-50);
+        }
+
+        body.dark-mode .task-item:hover {
+            background: var(--gray-700);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-300);
+            border-radius: 4px;
+            margin-right: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        body.dark-mode .task-checkbox {
+            border-color: var(--gray-600);
+        }
+
+        .task-checkbox.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .task-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        body.dark-mode .task-title {
+            color: var(--text-light);
+        }
+
+        .task-description {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        body.dark-mode .task-description {
+            color: var(--gray-400);
+        }
+
+        .task-completed .task-title,
+        .task-completed .task-description {
+            text-decoration: line-through;
+            color: var(--gray-400);
+        }
+
+        body.dark-mode .task-completed .task-title,
+        body.dark-mode .task-completed .task-description {
+            color: var(--gray-500);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .task-action {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .task-action:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .task-action:hover {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--gray-100);
+            border: none;
+            width: 48px;
+            height: 24px;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--gray-700);
+        }
+
+        .theme-toggle-handle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            position: absolute;
+            transition: all 0.3s ease;
+            left: 2px;
+        }
+
+        body.dark-mode .theme-toggle-handle {
+            left: 26px;
+        }
+
+        .theme-toggle i {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle .fa-sun {
+            margin-right: auto;
+        }
+
+        .theme-toggle .fa-moon {
+            margin-left: auto;
+        }
+
+        body.dark-mode .theme-toggle .fa-sun {
+            color: var(--gray-300);
+        }
+
+        body.dark-mode .theme-toggle .fa-moon {
+            color: var(--gray-300);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Section -->
+    <section id="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>PickTask</h1>
+                <p>Your personal task management assistant</p>
+            </div>
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="signin-tab">Sign In</div>
+                <div class="auth-tab" id="signup-tab">Sign Up</div>
+            </div>
+            <form class="auth-form active" id="signin-form">
+                <div class="form-group">
+                    <label for="signin-email" class="form-label">Email</label>
+                    <input type="email" id="signin-email" class="form-input" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signin-password" class="form-label">Password</label>
+                    <input type="password" id="signin-password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="form-submit">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+                <div class="auth-switch">
+                    Don't have an account? <a id="switch-to-signup">Sign Up</a>
+                </div>
+            </form>
+            <form class="auth-form" id="signup-form">
+                <div class="form-group">
+                    <label for="signup-name" class="form-label">Full Name</label>
+                    <input type="text" id="signup-name" class="form-input" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email" class="form-label">Email</label>
+                    <input type="email" id="signup-email" class="form-input" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password" class="form-label">Password</label>
+                    <input type="password" id="signup-password" class="form-input" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-role" class="form-label">Role</label>
+                    <select id="signup-role" class="form-input" required>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-submit">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </button>
+                <div class="auth-switch">
+                    Already have an account? <a id="switch-to-signin">Sign In</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- App Section -->
+    <section id="app-section">
+        <nav class="navbar">
+            <div class="container nav-container">
+                <a href="#" class="logo">
+                    <i class="fas fa-tasks"></i> PickTask
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="#" class="nav-link active">Dashboard</a></li>
+                    <li><a href="#" class="nav-link">Tasks</a></li>
+                    <li><a href="#" class="nav-link">Projects</a></li>
+                    <li><a href="#" class="nav-link">Team</a></li>
+                </ul>
+                <div class="nav-user">
+                    <div class="user-info">
+                        <div class="user-avatar" id="user-avatar">JD</div>
+                        <span class="user-name" id="user-name">John Doe</span>
+                    </div>
+                    <button class="logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                        <span class="theme-toggle-handle"></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="home-section">
+                <div class="section-header">
+                    <h2>Dashboard</h2>
+                    <p>Welcome back! Here's what's happening with your tasks today.</p>
+                </div>
+
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Total Tasks</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">12</div>
+                        <p class="card-description">+2 from last week</p>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Completed</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">8</div>
+                        <p class="card-description">67% completion rate</p>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">In Progress</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-spinner"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">3</div>
+                        <p class="card-description">25% of total tasks</p>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Overdue</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">1</div>
+                        <p class="card-description">Needs attention</p>
+                    </div>
+                </div>
+
+                <div class="recent-tasks">
+                    <h3 style="margin-bottom: 1.5rem;">Recent Tasks</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <div class="task-checkbox checked"></div>
+                            <div class="task-content">
+                                <div class="task-title">Design new homepage layout</div>
+                                <div class="task-description">Design • Due tomorrow</div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action"><i class="fas fa-edit"></i></button>
+                                <button class="task-action"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Write project proposal</div>
+                                <div class="task-description">Writing • Due in 3 days</div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action"><i class="fas fa-edit"></i></button>
+                                <button class="task-action"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <div class="task-checkbox checked"></div>
+                            <div class="task-content">
+                                <div class="task-title">Update documentation</div>
+                                <div class="task-description">Documentation • Completed</div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action"><i class="fas fa-edit"></i></button>
+                                <button class="task-action"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Prepare presentation slides</div>
+                                <div class="task-description">Presentation • Due next week</div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action"><i class="fas fa-edit"></i></button>
+                                <button class="task-action"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // DOM Elements
+        const authSection = document.getElementById('auth-section');
+        const appSection = document.getElementById('app-section');
+        const signinTab = document.getElementById('signin-tab');
+        const signupTab = document.getElementById('signup-tab');
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+        const switchToSignup = document.getElementById('switch-to-signup');
+        const switchToSignin = document.getElementById('switch-to-signin');
+        const logoutBtn = document.getElementById('logout-btn');
+        const themeToggle = document.getElementById('theme-toggle');
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+
+        // Initialize mock users if not exists
+        function initializeMockUsers() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check if mock users already exist
+            const adminExists = users.some(user => user.email === 'admin@demo.com');
+            const userExists = users.some(user => user.email === 'user@demo.com');
+            
+            if (!adminExists) {
+                users.push({
+                    id: Date.now().toString(),
+                    name: 'Admin User',
+                    email: 'admin@demo.com',
+                    password: '1234',
+                    role: 'admin'
+                });
+            }
+            
+            if (!userExists) {
+                users.push({
+                    id: (Date.now() + 1).toString(),
+                    name: 'Demo User',
+                    email: 'user@demo.com',
+                    password: '1234',
+                    role: 'user'
+                });
+            }
+            
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Check if user is logged in
+        function checkAuthStatus() {
+            const activeUser = JSON.parse(localStorage.getItem('activeUser'));
+            
+            if (activeUser) {
+                authSection.style.display = 'none';
+                appSection.style.display = 'block';
+                
+                // Update user info in the app
+                userAvatar.textContent = activeUser.name.split(' ').map(n => n[0]).join('');
+                userName.textContent = activeUser.name;
+            } else {
+                authSection.style.display = 'flex';
+                appSection.style.display = 'none';
+            }
+        }
+
+        // Switch between Sign In and Sign Up forms
+        signinTab.addEventListener('click', () => {
+            signinTab.classList.add('active');
+            signupTab.classList.remove('active');
+            signinForm.classList.add('active');
+            signupForm.classList.remove('active');
+        });
+
+        signupTab.addEventListener('click', () => {
+            signupTab.classList.add('active');
+            signinTab.classList.remove('active');
+            signupForm.classList.add('active');
+            signinForm.classList.remove('active');
+        });
+
+        switchToSignup.addEventListener('click', () => {
+            signupTab.click();
+        });
+
+        switchToSignin.addEventListener('click', () => {
+            signinTab.click();
+        });
+
+        // Handle Sign In
+        signinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
+            
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('activeUser', JSON.stringify(user));
+                checkAuthStatus();
+            } else {
+                alert('Invalid email or password. Please try again.');
+            }
+        });
+
+        // Handle Sign Up
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const role = document.getElementById('signup-role').value;
+            
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check if email already exists
+            if (users.some(user => user.email === email)) {
+                alert('Email already exists. Please use a different email.');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: Date.now().toString(),
+                name,
+                email,
+                password,
+                role
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('activeUser', JSON.stringify(newUser));
+            
+            checkAuthStatus();
+        });
+
+        // Handle Logout
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('activeUser');
+            checkAuthStatus();
+            
+            // Reset forms
+            signinForm.reset();
+            signupForm.reset();
+        });
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            // Save theme preference
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+
+        // Initialize
+        function init() {
+            initializeMockUsers();
+            checkAuthStatus();
+            
+            // Load theme preference
+            const darkMode = JSON.parse(localStorage.getItem('darkMode'));
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Run initialization
+        init();
+    </script>
+</body>
+</html>
