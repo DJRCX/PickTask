@@ -3,634 +3,2285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PickTask</title>
+    <title>PickTask - Task Management App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             --primary: #31c9c1;
+            --primary-dark: #2bb5ad;
             --bg-dark: #071727;
             --bg-light: #f9fafb;
             --text-light: #ffffff;
             --text-dark: #111827;
-            --border-color: #e5e7eb;
-            --card-bg: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
-        [data-theme="dark"] {
-            --primary: #31c9c1;
-            --bg-dark: #f9fafb;
-            --bg-light: #071727;
-            --text-light: #111827;
-            --text-dark: #ffffff;
-            --border-color: #1f2937;
-            --card-bg: #1f2937;
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            background-color: var(--bg-light);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
             color: var(--text-dark);
-            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--bg-light);
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        #auth-container {
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Auth Section */
+        #auth-section {
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: var(--bg-dark);
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+            padding: 2rem 1rem;
         }
 
-        #login-form-container, #signup-form-container {
-            background-color: rgba(0,0,0,0.2);
-            padding: 2rem;
-            border-radius: 8px;
-            width: 320px;
-            color: var(--text-light);
+        body.dark-mode #auth-section {
+            background: linear-gradient(135deg, var(--gray-800) 0%, var(--bg-dark) 100%);
         }
 
-        #login-form-container h2, #signup-form-container h2 {
+        .auth-container {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .auth-container {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .auth-header {
             text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        #login-form, #signup-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        #login-form input, #signup-form input, #signup-form select {
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        button {
-            padding: 0.75rem;
-            border: none;
-            border-radius: 4px;
-            background-color: var(--primary);
-            color: var(--text-light);
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        #auth-container p {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        #auth-container a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* App Container */
-        #app-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* Sidebar */
-        #sidebar {
-            width: 250px;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            display: flex;
-            flex-direction: column;
-            padding: 1.5rem;
-        }
-
-        .sidebar-header h2 {
-            text-align: center;
-            color: var(--primary);
             margin-bottom: 2rem;
         }
 
-        #sidebar nav {
-            flex-grow: 1;
-        }
-
-        #sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        #sidebar li a {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: var(--text-light);
-            text-decoration: none;
-            border-radius: 4px;
+        .auth-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
             margin-bottom: 0.5rem;
-            transition: background-color 0.2s, color 0.2s;
         }
 
-        #sidebar li a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        #sidebar li a.active {
-            background-color: var(--primary);
+        body.dark-mode .auth-header h1 {
             color: var(--text-light);
-            font-weight: bold;
+        }
+
+        .auth-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        body.dark-mode .auth-header p {
+            color: var(--gray-400);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .auth-tabs {
+            border-color: var(--gray-700);
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray-500);
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .form-label {
+            color: var(--gray-300);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .form-input {
+            background-color: var(--gray-700);
+            border-color: var(--gray-600);
+            color: var(--text-light);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(49, 201, 193, 0.1);
+        }
+
+        .form-submit {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .form-submit:hover,
+        .form-submit:focus {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray-600);
+        }
+
+        body.dark-mode .auth-switch {
+            color: var(--gray-400);
+        }
+
+        .auth-switch a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* App Section */
+        #app-section {
+            display: none;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .sidebar-logo i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            transform: translateX(4px);
+        }
+
+        .nav-item:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: var(--text-light);
+            box-shadow: 0 4px 12px rgba(49, 201, 193, 0.3);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
         }
 
         .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0 1rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-align: left;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .logout-btn:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2.5rem 3rem;
+            background: var(--bg-light);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Page Sections */
+        .page-section {
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        .page-subtitle {
+            color: var(--gray-600);
+            font-size: 1.125rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .page-content {
+            background: var(--bg-light);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--gray-200);
+            min-height: 400px;
+        }
+
+        /* Kanban Styles */
+        .kanban-task {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+            transition: all 0.2s ease;
+            cursor: grab;
+        }
+
+        .kanban-task:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .kanban-task.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+            cursor: grabbing;
+        }
+
+        .kanban-column.drag-over {
+            background: rgba(49, 201, 193, 0.1);
+            border: 2px dashed var(--primary);
+            border-radius: 8px;
+        }
+
+        .kanban-column.drag-over .kanban-tasks {
+            min-height: 100px;
+            border: 2px dashed var(--primary);
+            border-radius: 4px;
+            background: rgba(49, 201, 193, 0.05);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-header h4 {
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            flex: 1;
+            margin-right: 0.5rem;
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-low {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .task-description {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .task-assignee {
+            font-weight: 500;
+        }
+
+        /* Calendar Styles */
+        .calendar-day {
+            min-height: 80px;
+            padding: 0.5rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day:hover {
+            background: var(--gray-50);
+        }
+
+        .calendar-day.empty {
+            border: none;
+            cursor: default;
+        }
+
+        .calendar-day.empty:hover {
+            background: transparent;
+        }
+
+        .day-number {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .calendar-day.has-tasks {
+            border-color: var(--primary);
+        }
+
+        .day-tasks {
+            position: absolute;
+            bottom: 0.25rem;
+            left: 0.25rem;
+            right: 0.25rem;
+            display: flex;
+            gap: 2px;
+            flex-wrap: wrap;
+        }
+
+        .task-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .task-dot.priority-high {
+            background: #dc2626;
+        }
+
+        .task-dot.priority-medium {
+            background: #d97706;
+        }
+
+        .task-dot.priority-low {
+            background: #059669;
+        }
+
+        /* Activity Styles */
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
             gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        #theme-toggle-btn {
-            background-color: rgba(255, 255, 255, 0.1);
+        .activity-item:last-child {
+            border-bottom: none;
         }
 
-        /* Main Content */
-        #main-content {
-            flex-grow: 1;
-            padding: 2rem;
-            overflow-y: auto;
+        .activity-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
         }
 
-        .content-section {
-            display: none; /* Hidden by default */
+        .activity-content {
+            flex: 1;
         }
 
-        .content-section.active {
-            display: block; /* Shown when active */
+        .activity-message {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.4;
         }
 
-        /* Dashboard-specific styles */
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Theme Toggle Styles */
+        .theme-toggle-container {
+            margin: 1rem 0;
+            padding: 0 1rem;
+        }
+
+        .theme-toggle-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-align: left;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle-btn:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .theme-icon {
+            width: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            --bg-light: #071727;
+            --text-dark: #ffffff;
+            --gray-50: #1a2332;
+            --gray-100: #2a3441;
+            --gray-200: #374151;
+            --gray-300: #4b5563;
+            --gray-600: #9ca3af;
+            --gray-700: #6b7280;
+        }
+
+        body.dark-mode .main-content {
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .page-title {
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .page-subtitle {
+            color: var(--gray-300);
+        }
+
+        body.dark-mode .page-content {
+            background: var(--gray-100);
+            border-color: var(--gray-200);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .page-header {
+            border-color: var(--gray-200);
+        }
+
+        body.dark-mode .dashboard-card {
+            background: var(--gray-100);
+            border-color: var(--gray-200);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .dashboard-card .card-title {
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .dashboard-card .card-description {
+            color: var(--gray-300);
+        }
+
+        body.dark-mode .kanban-column {
+            background: var(--gray-100);
+            border-color: var(--gray-200);
+        }
+
+        body.dark-mode .kanban-task {
+            background: var(--gray-50);
+            border-color: var(--gray-200);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .kanban-task .task-header h4 {
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .kanban-task .task-description {
+            color: var(--gray-300);
+        }
+
+        body.dark-mode .kanban-task .task-footer {
+            color: var(--gray-400);
+        }
+
+        body.dark-mode .calendar-day {
+            background: var(--gray-100);
+            border-color: var(--gray-200);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .calendar-day:hover {
+            background: var(--gray-200);
+        }
+
+        body.dark-mode .calendar-day .day-number {
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .activity-item {
+            border-color: var(--gray-200);
+        }
+
+        body.dark-mode .activity-message {
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .activity-time {
+            color: var(--gray-400);
+        }
+
+        body.dark-mode .kanban-column.drag-over {
+            background: rgba(49, 201, 193, 0.2);
+            border-color: var(--primary);
+        }
+
+        body.dark-mode .kanban-column.drag-over .kanban-tasks {
+            background: rgba(49, 201, 193, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Home Section */
+        .home-section {
+            padding: 3rem 0;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .section-header h2 {
+            color: var(--text-light);
+        }
+
+        .section-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        body.dark-mode .section-header p {
+            color: var(--gray-400);
+        }
+
         .dashboard-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card h3 {
-            margin-top: 0;
-            color: var(--primary);
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #68e4b8);
+            border-radius: 16px 16px 0 0;
         }
 
-        /* Kanban-specific styles */
-        .kanban-board {
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
             display: flex;
-            gap: 1.5rem;
-        }
-
-        .kanban-column {
-            flex: 1;
-            background-color: var(--bg-light);
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .kanban-column h3 {
-            text-align: center;
-            margin-top: 0;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
         }
 
-        .kanban-task {
-            background-color: var(--card-bg);
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .card-title {
+            color: var(--gray-300);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .card-value {
+            color: var(--text-light);
+        }
+
+        .card-description {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .card-description {
+            color: var(--gray-400);
+        }
+
+        .recent-tasks {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .recent-tasks {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
             padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            transition: all 0.2s ease;
+        }
+
+        body.dark-mode .task-item {
+            border-color: var(--gray-700);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item:hover {
+            background: var(--gray-50);
+        }
+
+        body.dark-mode .task-item:hover {
+            background: var(--gray-700);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-300);
             border-radius: 4px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 1rem;
+            margin-right: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        body.dark-mode .task-checkbox {
+            border-color: var(--gray-600);
+        }
+
+        .task-checkbox.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .task-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        body.dark-mode .task-title {
+            color: var(--text-light);
+        }
+
+        .task-description {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        body.dark-mode .task-description {
+            color: var(--gray-400);
+        }
+
+        .task-completed .task-title,
+        .task-completed .task-description {
+            text-decoration: line-through;
+            color: var(--gray-400);
+        }
+
+        body.dark-mode .task-completed .task-title,
+        body.dark-mode .task-completed .task-description {
+            color: var(--gray-500);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .task-action {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .task-action:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .task-action:hover {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--gray-100);
+            border: none;
+            width: 48px;
+            height: 24px;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--gray-700);
+        }
+
+        .theme-toggle-handle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            position: absolute;
+            transition: all 0.3s ease;
+            left: 2px;
+        }
+
+        body.dark-mode .theme-toggle-handle {
+            left: 26px;
+        }
+
+        .theme-toggle i {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 2rem;
+            }
+
+            .sidebar {
+                width: 70px;
+                padding: 1.5rem 0.5rem;
+            }
+            
+            .sidebar-logo span, 
+            .nav-item span,
+            .logout-btn span,
+            .user-name,
+            .theme-text {
+                display: none;
+            }
+            
+            .theme-toggle-btn {
+                justify-content: center;
+                padding: 0.75rem 0.5rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-
-    <div id="auth-container">
-        <div id="login-form-container">
-            <h2>Login</h2>
-            <form id="login-form">
-                <input type="text" id="login-username" placeholder="Username" required>
-                <button type="submit">Login</button>
-            </form>
-            <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
-        </div>
-
-        <div id="signup-form-container" style="display: none;">
-            <h2>Sign Up</h2>
-            <form id="signup-form">
-                <input type="text" id="signup-username" placeholder="Username" required>
-                <select id="signup-role" required>
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                </select>
-                <button type="submit">Sign Up</button>
-            </form>
-            <p>Already have an account? <a href="#" id="show-login">Login</a></p>
-        </div>
-    </div>
-
-    <div id="app-container" style="display: none;">
-        <aside id="sidebar">
-            <div class="sidebar-header">
-                <h2>PickTask</h2>
+    <!-- Auth Section -->
+    <section id="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>PickTask</h1>
+                <p>Your personal task management assistant</p>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
-                    <li><a href="#workspace" class="nav-link">Workspace</a></li>
-                    <li><a href="#kanban" class="nav-link">Kanban</a></li>
-                    <li><a href="#calendar" class="nav-link">Calendar</a></li>
-                    <li><a href="#activity" class="nav-link">Activity</a></li>
-                    <li id="admin-panel-link" style="display: none;"><a href="#admin" class="nav-link">Admin Panel</a></li>
-                </ul>
-            </nav>
-            <div class="sidebar-footer">
-                <button id="logout-btn">Logout</button>
-                <div id="theme-switcher">
-                    <button id="theme-toggle-btn">Toggle Theme</button>
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="signin-tab">Sign In</div>
+                <div class="auth-tab" id="signup-tab">Sign Up</div>
+            </div>
+            <form class="auth-form active" id="signin-form">
+                <div class="form-group">
+                    <label for="signin-email" class="form-label">Email</label>
+                    <input type="email" id="signin-email" class="form-input" placeholder="Enter your email" required>
                 </div>
+                <div class="form-group">
+                    <label for="signin-password" class="form-label">Password</label>
+                    <input type="password" id="signin-password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="form-submit">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+                <div class="auth-switch">
+                    Don't have an account? <a id="switch-to-signup">Sign Up</a>
+                </div>
+            </form>
+            <form class="auth-form" id="signup-form">
+                <div class="form-group">
+                    <label for="signup-name" class="form-label">Full Name</label>
+                    <input type="text" id="signup-name" class="form-input" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email" class="form-label">Email</label>
+                    <input type="email" id="signup-email" class="form-input" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password" class="form-label">Password</label>
+                    <input type="password" id="signup-password" class="form-input" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-role" class="form-label">Role</label>
+                    <select id="signup-role" class="form-input" required>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-submit">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </button>
+                <div class="auth-switch">
+                    Already have an account? <a id="switch-to-signin">Sign In</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- App Section -->
+    <section id="app-section">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-tasks"></i>
+                PickTask
             </div>
-        </aside>
+            
+            <div class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" data-page="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="workspace">
+                    <i class="fas fa-folder"></i>
+                    <span>Workspace</span>
+                </a>
+                <a href="#" class="nav-item" data-page="kanban">
+                    <i class="fas fa-columns"></i>
+                    <span>Kanban</span>
+                </a>
+                <a href="#" class="nav-item" data-page="calendar">
+                    <i class="fas fa-calendar"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="#" class="nav-item" data-page="activity">
+                    <i class="fas fa-bell"></i>
+                    <span>Activity</span>
+                </a>
+                <!-- Admin Panel - hidden by default, shown only for admin users -->
+                <a href="#" class="nav-item" data-page="admin" id="adminLink" style="display: none;">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin Panel</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">JD</div>
+                    <span class="user-name" id="user-name">John Doe</span>
+                </div>
+                
+                <!-- Theme Toggle -->
+                <div class="theme-toggle-container">
+                    <button class="theme-toggle-btn" id="theme-toggle-btn">
+                        <i class="fas fa-sun theme-icon" id="theme-icon"></i>
+                        <span class="theme-text" id="theme-text">Light Mode</span>
+                    </button>
+                </div>
+                
+                <button class="logout-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
 
-        <main id="main-content">
-            <section id="home" class="content-section active">
-                <h1>Welcome to PickTask</h1>
-                <p>Select a section from the sidebar to get started.</p>
-            </section>
-            <section id="dashboard" class="content-section">
-                <h1>Dashboard</h1>
-                <div id="dashboard-content" class="dashboard-cards"></div>
-            </section>
-            <section id="workspace" class="content-section">
-                <h1>Workspace</h1>
-                <div id="workspace-content"></div>
-            </section>
-            <section id="kanban" class="content-section">
-                <h1>Kanban Board</h1>
-                <div id="kanban-content" class="kanban-board"></div>
-            </section>
-            <section id="calendar" class="content-section">
-                <h1>Calendar</h1>
-                <div id="calendar-content"></div>
-            </section>
-            <section id="activity" class="content-section">
-                <h1>Activity</h1>
-                <div id="activity-content"></div>
-            </section>
-            <section id="admin" class="content-section">
-                <h1>Admin Panel</h1>
-                <p>Manage users/workspaces</p>
-            </section>
-        </main>
-    </div>
-
-    <script>
-        // Apply theme immediately to prevent FOUC
-        const applyInitialTheme = () => {
-            const savedTheme = localStorage.getItem('picktask_theme');
-            if (savedTheme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            }
-        };
-        applyInitialTheme();
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- App State ---
-            let users = [];
-            let workspaces = [];
-            let tasks = [];
-
-            // --- Data Initialization ---
-            const initializeMockData = () => {
-                const usersExist = getUsers().length > 0;
-                if (usersExist) { // Assume if users exist, all data exists
-                    workspaces = JSON.parse(localStorage.getItem('picktask_workspaces')) || [];
-                    tasks = JSON.parse(localStorage.getItem('picktask_tasks')) || [];
-                    return;
-                };
-
-                console.log('Initializing mock data...');
-
-                // Mock Users
-                const mockUsers = [
-                    { username: 'admin', role: 'admin', id: 1 },
-                    { username: 'jules', role: 'user', id: 2 }
-                ];
-                saveUsers(mockUsers);
-                users = mockUsers;
-
-                // Mock Workspaces
-                const mockWorkspaces = [
-                    { id: 1, name: 'Project Phoenix', ownerId: 1 },
-                    { id: 2, name: 'Marketing Campaign', ownerId: 1 }
-                ];
-                localStorage.setItem('picktask_workspaces', JSON.stringify(mockWorkspaces));
-                workspaces = mockWorkspaces;
-
-                // Mock Tasks
-                const mockTasks = [
-                    { id: 1, workspaceId: 1, title: 'Design new UI mockups', description: '', status: 'done', dueDate: new Date().toISOString().split('T')[0], assigneeId: 2 },
-                    { id: 2, workspaceId: 1, title: 'Develop authentication module', description: '', status: 'inprogress', dueDate: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString().split('T')[0], assigneeId: 2 },
-                    { id: 3, workspaceId: 1, title: 'Set up CI/CD pipeline', description: '', status: 'todo', dueDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0], assigneeId: 1 },
-                    { id: 4, workspaceId: 2, title: 'Draft blog post', description: '', status: 'todo', dueDate: new Date().toISOString().split('T')[0], assigneeId: 2 },
-                    { id: 5, workspaceId: 2, title: 'Create social media assets', description: '', status: 'todo', dueDate: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0], assigneeId: 1 },
-                ];
-                localStorage.setItem('picktask_tasks', JSON.stringify(mockTasks));
-                tasks = mockTasks;
-
-                // Mock Activities
-                const mockActivities = [
-                    { id: 1, message: 'Jules created task "Design new UI mockups"', timestamp: new Date() },
-                    { id: 2, message: 'Admin updated status of "Design new UI mockups" to Done', timestamp: new Date() },
-                ];
-                localStorage.setItem('picktask_activities', JSON.stringify(mockActivities));
-            };
-
-            initializeMockData();
-
-            // --- DOM Elements ---
-            const authContainer = document.getElementById('auth-container');
-            const appContainer = document.getElementById('app-container');
-
-            // Auth forms
-            const loginFormContainer = document.getElementById('login-form-container');
-            const signupFormContainer = document.getElementById('signup-form-container');
-            const showSignupLink = document.getElementById('show-signup');
-            const showLoginLink = document.getElementById('show-login');
-            const loginForm = document.getElementById('login-form');
-            const signupForm = document.getElementById('signup-form');
-
-            // Sidebar and navigation
-            const navLinks = document.querySelectorAll('.nav-link');
-            const contentSections = document.querySelectorAll('.content-section');
-
-            // --- LocalStorage Helper Functions ---
-            const getUsers = () => JSON.parse(localStorage.getItem('picktask_users')) || [];
-            const saveUsers = (users) => localStorage.setItem('picktask_users', JSON.stringify(users));
-            const getActiveUser = () => JSON.parse(localStorage.getItem('activeUser'));
-            const setActiveUser = (user) => localStorage.setItem('activeUser', JSON.stringify(user));
-            const clearActiveUser = () => localStorage.removeItem('activeUser');
-
-
-            // --- Data Access / CRUD Helpers ---
-            const getWorkspaces = () => JSON.parse(localStorage.getItem('picktask_workspaces')) || [];
-            const getTasks = () => JSON.parse(localStorage.getItem('picktask_tasks')) || [];
-            const getActivities = () => JSON.parse(localStorage.getItem('picktask_activities')) || [];
-            const logActivity = (message) => {
-                const activities = getActivities();
-                const newActivity = { id: Date.now(), message, timestamp: new Date() };
-                activities.unshift(newActivity); // Add to the beginning
-                localStorage.setItem('picktask_activities', JSON.stringify(activities.slice(0, 20))); // Keep last 20
-            };
-
-
-            // --- Content Rendering Functions ---
-
-            /**
-             * Renders the dashboard with summary statistics.
-             */
-            const renderDashboard = () => {
-                const tasks = getTasks();
-                const totalTasks = tasks.length;
-                const doneTasks = tasks.filter(t => t.status === 'done').length;
-                const completionPercentage = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
-                const dueToday = tasks.filter(t => t.dueDate === new Date().toISOString().split('T')[0]).length;
-
-                const content = `
-                    <div class="card"><h3>Completion</h3><p>${completionPercentage}%</p></div>
-                    <div class="card"><h3>Active Tasks</h3><p>${totalTasks - doneTasks}</p></div>
-                    <div class="card"><h3>Due Today</h3><p>${dueToday}</p></div>
-                `;
-                document.getElementById('dashboard-content').innerHTML = content;
-            };
-
-            /**
-             * Renders the Kanban board, organizing tasks into columns by status.
-             */
-            const renderKanban = () => {
-                const tasks = getTasks();
-                const statuses = ['todo', 'inprogress', 'done'];
-                const content = statuses.map(status => `
-                    <div class="kanban-column">
-                        <h3>${status.charAt(0).toUpperCase() + status.slice(1)}</h3>
-                        ${tasks.filter(t => t.status === status).map(task => `
-                            <div class="kanban-task">
-                                <h4>${task.title}</h4>
-                                <p>Due: ${task.dueDate}</p>
-                            </div>
-                        `).join('')}
-                    </div>
-                `).join('');
-                document.getElementById('kanban-content').innerHTML = content;
-            };
-
-            /**
-             * Renders the list of workspaces.
-             */
-            const renderWorkspaces = () => {
-                const workspaces = getWorkspaces();
-                const content = `<ul>${workspaces.map(w => `<li>${w.name}</li>`).join('')}</ul>`;
-                document.getElementById('workspace-content').innerHTML = content;
-            };
-
-            /**
-             * Renders the calendar view, grouping tasks by due date.
-             */
-            const renderCalendar = () => {
-                const tasks = getTasks();
-                const tasksByDate = tasks.reduce((acc, task) => {
-                    (acc[task.dueDate] = acc[task.dueDate] || []).push(task);
-                    return acc;
-                }, {});
-
-                const content = Object.keys(tasksByDate).sort().map(date => `
-                    <div>
-                        <h4>${new Date(date).toDateString()}</h4>
-                        <ul>
-                            ${tasksByDate[date].map(task => `<li>${task.title}</li>`).join('')}
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Home Page -->
+            <section id="home" class="page-section active">
+                <div class="page-header">
+                    <h1 class="page-title">Welcome to PickTask</h1>
+                    <p class="page-subtitle">Hello, <span id="userName">User</span>! This is your home page.</p>
+                </div>
+                <div class="page-content">
+                    <p>Use the sidebar to navigate between different sections of the application.</p>
+                    <p>PickTask helps you organize tasks, collaborate with your team, and get work done faster with our intuitive platform.</p>
+                    <div style="margin-top: 2rem; padding: 1rem; background: var(--gray-100); border-radius: 8px;">
+                        <h3>Quick Start Guide</h3>
+                        <ul style="margin-top: 1rem; line-height: 1.6;">
+                            <li>Go to <strong>Workspace</strong> to create and manage your projects</li>
+                            <li>Use <strong>Kanban</strong> to visualize your workflow</li>
+                            <li>Check the <strong>Calendar</strong> to see your deadlines</li>
+                            <li>Monitor your <strong>Activity</strong> to stay updated</li>
                         </ul>
                     </div>
-                `).join('');
-                document.getElementById('calendar-content').innerHTML = content || '<p>No tasks with due dates.</p>';
-            };
+                </div>
+            </section>
 
-            /**
-             * Renders the activity feed.
-             */
-            const renderActivity = () => {
-                const activities = getActivities();
-                const content = `<ul>${activities.map(act => `<li>${act.message} - <small>${new Date(act.timestamp).toLocaleString()}</small></li>`).join('')}</ul>`;
-                document.getElementById('activity-content').innerHTML = content;
-            };
+            <!-- Dashboard Page -->
+            <section id="dashboard" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Here's what's happening with your tasks today.</p>
+                </div>
+                <div class="page-content">
+                    <div class="dashboard-cards">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Total Tasks</h3>
+                                <div class="card-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">0</div>
+                            <p class="card-description">All your tasks</p>
+                        </div>
 
-            /**
-             * A master function to render all dynamic content in the app.
-             */
-            const renderAppContent = () => {
-                renderDashboard();
-                renderKanban();
-                renderWorkspaces();
-                renderCalendar();
-                renderActivity();
-            };
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Completed</h3>
+                                <div class="card-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">0</div>
+                            <p class="card-description">Finished tasks</p>
+                        </div>
 
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Due Today</h3>
+                                <div class="card-icon">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">0</div>
+                            <p class="card-description">Tasks due today</p>
+                        </div>
 
-            // --- UI Update Functions ---
-            const showApp = (user) => {
-                renderAppContent();
-                authContainer.style.display = 'none';
-                appContainer.style.display = 'flex';
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Completion Rate</h3>
+                                <div class="card-icon">
+                                    <i class="fas fa-percentage"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">0%</div>
+                            <p class="card-description">Overall progress</p>
+                        </div>
+                    </div>
 
-                // Role-based UI updates
-                const adminPanelLink = document.getElementById('admin-panel-link');
-                if (user.role === 'admin') {
-                    adminPanelLink.style.display = 'block';
+                    <div class="recent-tasks" style="margin-top: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem;">Recent Tasks</h3>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="task-checkbox checked"></div>
+                                <div class="task-content">
+                                    <div class="task-title">Design new homepage layout</div>
+                                    <div class="task-description">Design • Due tomorrow</div>
+                                </div>
+                                <div class="task-actions">
+                                    <button class="task-action"><i class="fas fa-edit"></i></button>
+                                    <button class="task-action"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <div class="task-checkbox"></div>
+                                <div class="task-content">
+                                    <div class="task-title">Write project proposal</div>
+                                    <div class="task-description">Writing • Due in 3 days</div>
+                                </div>
+                                <div class="task-actions">
+                                    <button class="task-action"><i class="fas fa-edit"></i></button>
+                                    <button class="task-action"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <div class="task-checkbox checked"></div>
+                                <div class="task-content">
+                                    <div class="task-title">Update documentation</div>
+                                    <div class="task-description">Documentation • Completed</div>
+                                </div>
+                                <div class="task-actions">
+                                    <button class="task-action"><i class="fas fa-edit"></i></button>
+                                    <button class="task-action"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <div class="task-checkbox"></div>
+                                <div class="task-content">
+                                    <div class="task-title">Prepare presentation slides</div>
+                                    <div class="task-description">Presentation • Due next week</div>
+                                </div>
+                                <div class="task-actions">
+                                    <button class="task-action"><i class="fas fa-edit"></i></button>
+                                    <button class="task-action"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workspace Page -->
+            <section id="workspace" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">Workspace</h1>
+                    <p class="page-subtitle">Create, manage, and collaborate on projects within your workspaces.</p>
+                </div>
+                <div class="page-content">
+                    <h2>Your Workspaces</h2>
+                    <p>Create, manage, and collaborate on projects within your workspaces.</p>
+                    <div style="margin-top: 2rem;">
+                        <button style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600;">Create New Workspace</button>
+                    </div>
+                    <div style="margin-top: 2rem; display: grid; gap: 1rem;">
+                        <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                            <h3>Marketing Campaign</h3>
+                            <p>Q4 Product Launch</p>
+                            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                                <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">5 tasks</span>
+                                <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">3 members</span>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                            <h3>Website Redesign</h3>
+                            <p>Complete by December 15</p>
+                            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                                <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">12 tasks</span>
+                                <span style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.875rem;">5 members</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Kanban Page -->
+            <section id="kanban" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">Kanban Board</h1>
+                    <p class="page-subtitle">Visualize your workflow with our intuitive Kanban board.</p>
+                </div>
+                <div class="page-content">
+                    <h2>Drag and Drop Your Tasks</h2>
+                    <p>Visualize your workflow with our intuitive Kanban board.</p>
+                    <div style="margin-top: 2rem; display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem;">
+                        <div class="kanban-column" data-column="todo" style="min-width: 280px; background: var(--gray-100); padding: 1rem; border-radius: 8px;">
+                            <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">To Do</h3>
+                            <div class="kanban-tasks"></div>
+                        </div>
+                        <div class="kanban-column" data-column="in-progress" style="min-width: 280px; background: var(--gray-100); padding: 1rem; border-radius: 8px;">
+                            <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">In Progress</h3>
+                            <div class="kanban-tasks"></div>
+                        </div>
+                        <div class="kanban-column" data-column="done" style="min-width: 280px; background: var(--gray-100); padding: 1rem; border-radius: 8px;">
+                            <h3 style="margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-300);">Done</h3>
+                            <div class="kanban-tasks"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar Page -->
+            <section id="calendar" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">Calendar</h1>
+                    <p class="page-subtitle">Stay on track with your schedule.</p>
+                </div>
+                <div class="page-content">
+                    <h2>Upcoming Deadlines & Events</h2>
+                    <p>Stay on track with your schedule.</p>
+                    <div style="margin-top: 2rem; background: white; padding: 2rem; border-radius: 8px;">
+                        <div class="calendar-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h3 class="calendar-month-year" style="margin: 0;"></h3>
+                            <div class="calendar-navigation">
+                                <button class="calendar-nav-btn" style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin: 0 0.25rem;">Previous</button>
+                                <button class="calendar-nav-btn" style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin: 0 0.25rem;">Next</button>
+                            </div>
+                        </div>
+                        <div class="calendar-weekdays" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 1rem; text-align: center; font-weight: 600;">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+                        <div class="calendar-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; text-align: center;">
+                            <!-- Calendar days will be dynamically generated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Activity Page -->
+            <section id="activity" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">Activity</h1>
+                    <p class="page-subtitle">Stay updated with the latest changes in your workspaces.</p>
+                </div>
+                <div class="page-content">
+                    <h2>Recent Activity</h2>
+                    <p>Stay updated with the latest changes in your workspaces.</p>
+                    <div class="activity-list" style="margin-top: 2rem; max-height: 500px; overflow-y: auto;">
+                        <!-- Activity items will be dynamically generated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Panel Page -->
+            <section id="admin" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">Admin Panel</h1>
+                    <p class="page-subtitle">Manage users and workspaces.</p>
+                </div>
+                <div class="page-content">
+                    <h2>Manage Users & Workspaces</h2>
+                    <p>As an administrator, you have access to manage all users and workspaces.</p>
+                    <div style="margin-top: 2rem; display: grid; gap: 1.5rem;">
+                        <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                            <h3>Manage Users</h3>
+                            <p>View, edit, and manage all user accounts in the system.</p>
+                            <button style="margin-top: 1rem; background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Manage Users</button>
+                        </div>
+                        <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                            <h3>Manage Workspaces</h3>
+                            <p>Create, edit, and manage all workspaces and their permissions.</p>
+                            <button style="margin-top: 1rem; background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Manage Workspaces</button>
+                        </div>
+                        <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                            <h3>System Settings</h3>
+                            <p>Configure system-wide settings and preferences.</p>
+                            <button style="margin-top: 1rem; background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">System Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </section>
+
+    <script>
+        /*
+         * PickTask - Single Page Application
+         * Features: Authentication, Role-based Access, SPA Navigation, 
+         * Dashboard, Kanban Board, Calendar, Activity Feed, Theme Toggle
+         */
+
+        // ========================================
+        // DOM ELEMENTS & INITIALIZATION
+        // ========================================
+        const authSection = document.getElementById('auth-section');
+        const appSection = document.getElementById('app-section');
+        const signinTab = document.getElementById('signin-tab');
+        const signupTab = document.getElementById('signup-tab');
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+        const switchToSignup = document.getElementById('switch-to-signup');
+        const switchToSignin = document.getElementById('switch-to-signin');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+
+        // ========================================
+        // MOCK DATA INITIALIZATION
+        // ========================================
+
+        // Initialize mock users if not exists
+        function initializeMockUsers() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check if mock users already exist
+            const adminExists = users.some(user => user.email === 'admin@demo.com');
+            const userExists = users.some(user => user.email === 'user@demo.com');
+            
+            if (!adminExists) {
+                users.push({
+                    id: Date.now().toString(),
+                    name: 'Admin User',
+                    email: 'admin@demo.com',
+                    password: '1234',
+                    role: 'admin'
+                });
+            }
+            
+            if (!userExists) {
+                users.push({
+                    id: (Date.now() + 1).toString(),
+                    name: 'Demo User',
+                    email: 'user@demo.com',
+                    password: '1234',
+                    role: 'user'
+                });
+            }
+            
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Initialize mock data for tasks and activities
+        function initializeMockData() {
+            // Mock tasks data with more realistic content
+            const today = new Date();
+            const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+            const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+            const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            const mockTasks = [
+                {
+                    id: 1,
+                    title: 'Design homepage mockup',
+                    description: 'Create wireframes and high-fidelity designs for the new homepage layout with focus on user experience and mobile responsiveness',
+                    status: 'todo',
+                    priority: 'high',
+                    dueDate: tomorrow.toISOString().split('T')[0],
+                    assignee: 'John Doe',
+                    createdDate: lastWeek.toISOString().split('T')[0]
+                },
+                {
+                    id: 2,
+                    title: 'Write project proposal',
+                    description: 'Draft the Q1 2024 project proposal document including budget estimates, timeline, and resource requirements',
+                    status: 'in-progress',
+                    priority: 'medium',
+                    dueDate: nextWeek.toISOString().split('T')[0],
+                    assignee: 'Jane Smith',
+                    createdDate: lastWeek.toISOString().split('T')[0]
+                },
+                {
+                    id: 3,
+                    title: 'Update API documentation',
+                    description: 'Update REST API documentation with new endpoints, authentication methods, and example requests/responses',
+                    status: 'done',
+                    priority: 'low',
+                    dueDate: today.toISOString().split('T')[0],
+                    assignee: 'Mike Johnson',
+                    createdDate: lastWeek.toISOString().split('T')[0]
+                },
+                {
+                    id: 4,
+                    title: 'Prepare client presentation',
+                    description: 'Create comprehensive slides for the quarterly client presentation covering project progress, metrics, and future roadmap',
+                    status: 'todo',
+                    priority: 'high',
+                    dueDate: nextWeek.toISOString().split('T')[0],
+                    assignee: 'Sarah Wilson',
+                    createdDate: today.toISOString().split('T')[0]
+                },
+                {
+                    id: 5,
+                    title: 'Code review and testing',
+                    description: 'Review pending pull requests, run automated tests, and ensure code quality standards are met',
+                    status: 'in-progress',
+                    priority: 'medium',
+                    dueDate: tomorrow.toISOString().split('T')[0],
+                    assignee: 'Alex Brown',
+                    createdDate: lastWeek.toISOString().split('T')[0]
+                },
+                {
+                    id: 6,
+                    title: 'Setup development environment',
+                    description: 'Configure local development setup for new team members including Docker containers, database setup, and IDE configuration',
+                    status: 'done',
+                    priority: 'medium',
+                    dueDate: lastWeek.toISOString().split('T')[0],
+                    assignee: 'Tom Davis',
+                    createdDate: lastWeek.toISOString().split('T')[0]
+                },
+                {
+                    id: 7,
+                    title: 'Implement user authentication',
+                    description: 'Develop secure user authentication system with JWT tokens, password hashing, and session management',
+                    status: 'todo',
+                    priority: 'high',
+                    dueDate: nextWeek.toISOString().split('T')[0],
+                    assignee: 'Emma Wilson',
+                    createdDate: today.toISOString().split('T')[0]
+                },
+                {
+                    id: 8,
+                    title: 'Database optimization',
+                    description: 'Optimize database queries, add proper indexing, and implement caching strategies for better performance',
+                    status: 'in-progress',
+                    priority: 'medium',
+                    dueDate: nextWeek.toISOString().split('T')[0],
+                    assignee: 'David Chen',
+                    createdDate: lastWeek.toISOString().split('T')[0]
+                }
+            ];
+
+            // Mock activities data with more realistic content
+            const mockActivities = [
+                {
+                    id: 1,
+                    type: 'task_completed',
+                    message: 'Mike Johnson completed task "Update API documentation"',
+                    timestamp: new Date(Date.now() - 30 * 60 * 1000), // 30 minutes ago
+                    user: 'Mike Johnson',
+                    avatar: 'MJ'
+                },
+                {
+                    id: 2,
+                    type: 'task_moved',
+                    message: 'Sarah Wilson moved task "Prepare client presentation" to To Do',
+                    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+                    user: 'Sarah Wilson',
+                    avatar: 'SW'
+                },
+                {
+                    id: 3,
+                    type: 'task_created',
+                    message: 'Emma Wilson created task "Implement user authentication"',
+                    timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
+                    user: 'Emma Wilson',
+                    avatar: 'EW'
+                },
+                {
+                    id: 4,
+                    type: 'task_updated',
+                    message: 'Alex Brown updated task "Code review and testing" status to In Progress',
+                    timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
+                    user: 'Alex Brown',
+                    avatar: 'AB'
+                },
+                {
+                    id: 5,
+                    type: 'comment_added',
+                    message: 'Jane Smith added a comment to "Write project proposal"',
+                    timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+                    user: 'Jane Smith',
+                    avatar: 'JS'
+                },
+                {
+                    id: 6,
+                    type: 'task_assigned',
+                    message: 'David Chen assigned task "Database optimization" to himself',
+                    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+                    user: 'David Chen',
+                    avatar: 'DC'
+                },
+                {
+                    id: 7,
+                    type: 'task_completed',
+                    message: 'Tom Davis completed task "Setup development environment"',
+                    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+                    user: 'Tom Davis',
+                    avatar: 'TD'
+                },
+                {
+                    id: 8,
+                    type: 'task_created',
+                    message: 'John Doe created task "Design homepage mockup"',
+                    timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
+                    user: 'John Doe',
+                    avatar: 'JD'
+                }
+            ];
+
+            // Store mock data in localStorage if not already present
+            if (!localStorage.getItem('mockTasks')) {
+                localStorage.setItem('mockTasks', JSON.stringify(mockTasks));
+            }
+            if (!localStorage.getItem('mockActivities')) {
+                localStorage.setItem('mockActivities', JSON.stringify(mockActivities));
+            }
+        }
+
+        // ========================================
+        // AUTHENTICATION & USER MANAGEMENT
+        // ========================================
+
+        // Check if user is logged in
+        function checkAuthStatus() {
+            const activeUser = JSON.parse(localStorage.getItem('activeUser'));
+            
+            if (activeUser) {
+                authSection.style.display = 'none';
+                appSection.style.display = 'flex';
+                
+                // Update user info in the app
+                userAvatar.textContent = activeUser.name.split(' ').map(n => n[0]).join('');
+                userName.textContent = activeUser.name;
+                
+                // Update user name in home page
+                const userNameSpan = document.getElementById('userName');
+                if (userNameSpan) {
+                    userNameSpan.textContent = activeUser.name;
+                }
+                
+                // Handle admin panel visibility
+                const adminLink = document.getElementById('adminLink');
+                if (activeUser.role === 'admin') {
+                    adminLink.style.display = 'block';
                 } else {
-                    adminPanelLink.style.display = 'none';
+                    adminLink.style.display = 'none';
                 }
+                
+                // Navigate to last active page or home by default
+                const lastActivePage = localStorage.getItem('lastActivePage') || 'home';
+                navigateToPage(lastActivePage);
+            } else {
+                authSection.style.display = 'flex';
+                appSection.style.display = 'none';
+            }
+        }
+
+        // Switch between Sign In and Sign Up forms
+        signinTab.addEventListener('click', () => {
+            signinTab.classList.add('active');
+            signupTab.classList.remove('active');
+            signinForm.classList.add('active');
+            signupForm.classList.remove('active');
+        });
+
+        signupTab.addEventListener('click', () => {
+            signupTab.classList.add('active');
+            signinTab.classList.remove('active');
+            signupForm.classList.add('active');
+            signinForm.classList.remove('active');
+        });
+
+        switchToSignup.addEventListener('click', () => {
+            signupTab.click();
+        });
+
+        switchToSignin.addEventListener('click', () => {
+            signinTab.click();
+        });
+
+        // Handle Sign In
+        signinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
+            
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('activeUser', JSON.stringify(user));
+                checkAuthStatus();
+            } else {
+                alert('Invalid email or password. Please try again.');
+            }
+        });
+
+        // Handle Sign Up
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const role = document.getElementById('signup-role').value;
+            
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check if email already exists
+            if (users.some(user => user.email === email)) {
+                alert('Email already exists. Please use a different email.');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: Date.now().toString(),
+                name,
+                email,
+                password,
+                role
             };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('activeUser', JSON.stringify(newUser));
+            
+            checkAuthStatus();
+        });
 
-            const showAuth = () => {
-                appContainer.style.display = 'none';
-                authContainer.style.display = 'flex';
-                loginFormContainer.style.display = 'block';
-                signupFormContainer.style.display = 'none';
+        // Handle Logout
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('activeUser');
+            checkAuthStatus();
+            
+            // Reset forms
+            signinForm.reset();
+            signupForm.reset();
+        });
 
-                // Hide admin link on logout
-                document.getElementById('admin-panel-link').style.display = 'none';
-            };
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const body = document.body;
+            const isDarkMode = body.classList.contains('dark-mode');
+            
+            if (isDarkMode) {
+                // Switch to light mode
+                body.classList.remove('dark-mode');
+                themeIcon.className = 'fas fa-sun theme-icon';
+                themeText.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                // Switch to dark mode
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-moon theme-icon';
+                themeText.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
 
-            // --- Authentication Logic ---
-            signupForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const username = document.getElementById('signup-username').value.trim();
-                const role = document.getElementById('signup-role').value;
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Use saved theme or system preference
+            const shouldUseDarkMode = savedTheme === 'dark' || (!savedTheme && prefersDark);
+            
+            if (shouldUseDarkMode) {
+                document.body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-moon theme-icon';
+                themeText.textContent = 'Dark Mode';
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeIcon.className = 'fas fa-sun theme-icon';
+                themeText.textContent = 'Light Mode';
+            }
+        }
 
-                if (users.find(u => u.username === username)) {
-                    alert('Username already exists!');
-                    return;
-                }
+        // Theme toggle event listener
+        themeToggleBtn.addEventListener('click', toggleTheme);
 
-                const newUser = { username, role, id: Date.now() };
-                users.push(newUser);
-                saveUsers(users);
+        // ========================================
+        // SPA NAVIGATION & PAGE MANAGEMENT
+        // ========================================
 
-                setActiveUser(newUser);
-                showApp(newUser);
+        // Navigation functionality
+        function navigateToPage(pageId) {
+            // Hide all page sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
             });
-
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const username = document.getElementById('login-username').value.trim();
-                const user = users.find(u => u.username === username);
-
-                if (user) {
-                    setActiveUser(user);
-                    showApp(user);
-                } else {
-                    alert('User not found!');
-                }
+            
+            // Show selected page section
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update active state in sidebar
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
             });
+            
+            const activeNavItem = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
+            }
 
-            document.getElementById('logout-btn').addEventListener('click', () => {
-                clearActiveUser();
-                showAuth();
+            // Save current page to localStorage
+            localStorage.setItem('lastActivePage', pageId);
+
+            // Load page-specific data
+            loadPageData(pageId);
+        }
+
+        // ========================================
+        // PAGE DATA LOADING & DYNAMIC CONTENT
+        // ========================================
+
+        // Load data for specific pages
+        function loadPageData(pageId) {
+            switch(pageId) {
+                case 'dashboard':
+                    loadDashboardData();
+                    break;
+                case 'kanban':
+                    loadKanbanData();
+                    break;
+                case 'calendar':
+                    loadCalendarData();
+                    break;
+                case 'activity':
+                    loadActivityData();
+                    break;
+            }
+        }
+
+        // Dashboard data loading
+        function loadDashboardData() {
+            const tasks = JSON.parse(localStorage.getItem('mockTasks')) || [];
+            const totalTasks = tasks.length;
+            const completedTasks = tasks.filter(task => task.status === 'done').length;
+            const today = new Date().toISOString().split('T')[0];
+            const dueToday = tasks.filter(task => task.dueDate === today).length;
+            const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            // Update dashboard cards
+            const totalTasksElement = document.querySelector('#dashboard .dashboard-cards .dashboard-card:nth-child(1) .card-value');
+            const completedTasksElement = document.querySelector('#dashboard .dashboard-cards .dashboard-card:nth-child(2) .card-value');
+            const dueTodayElement = document.querySelector('#dashboard .dashboard-cards .dashboard-card:nth-child(3) .card-value');
+            const completionRateElement = document.querySelector('#dashboard .dashboard-cards .dashboard-card:nth-child(4) .card-value');
+
+            if (totalTasksElement) totalTasksElement.textContent = totalTasks;
+            if (completedTasksElement) completedTasksElement.textContent = completedTasks;
+            if (dueTodayElement) dueTodayElement.textContent = dueToday;
+            if (completionRateElement) completionRateElement.textContent = completionRate + '%';
+        }
+
+        // Kanban data loading
+        function loadKanbanData() {
+            const tasks = JSON.parse(localStorage.getItem('mockTasks')) || [];
+            const todoTasks = tasks.filter(task => task.status === 'todo');
+            const inProgressTasks = tasks.filter(task => task.status === 'in-progress');
+            const doneTasks = tasks.filter(task => task.status === 'done');
+
+            // Update kanban columns
+            updateKanbanColumn('todo', todoTasks);
+            updateKanbanColumn('in-progress', inProgressTasks);
+            updateKanbanColumn('done', doneTasks);
+
+            // Setup drag and drop for columns
+            setupKanbanDragAndDrop();
+        }
+
+        // Setup drag and drop functionality for Kanban
+        function setupKanbanDragAndDrop() {
+            const columns = document.querySelectorAll('.kanban-column');
+            
+            columns.forEach(column => {
+                const tasksContainer = column.querySelector('.kanban-tasks');
+                
+                // Make column droppable
+                column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('dragenter', handleDragEnter);
+                column.addEventListener('dragleave', handleDragLeave);
+                column.addEventListener('drop', handleDrop);
             });
+        }
 
-            // --- Initial Load ---
-            const checkLoginState = () => {
-                const activeUser = getActiveUser();
-                if (activeUser) {
-                    showApp(activeUser);
-                    const lastPage = localStorage.getItem('picktask_activePage') || '#home';
-                    navigateTo(lastPage);
-                } else {
-                    showAuth();
-                }
-            };
+        function updateKanbanColumn(columnId, tasks) {
+            const column = document.querySelector(`#kanban .kanban-column[data-column="${columnId}"]`);
+            if (!column) return;
 
+            const tasksContainer = column.querySelector('.kanban-tasks');
+            if (!tasksContainer) return;
 
-            // --- UI Interactions ---
-
-            // Toggle between login and signup forms
-            showSignupLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                loginFormContainer.style.display = 'none';
-                signupFormContainer.style.display = 'block';
+            tasksContainer.innerHTML = '';
+            tasks.forEach(task => {
+                const taskElement = createKanbanTask(task);
+                tasksContainer.appendChild(taskElement);
             });
+        }
 
-            showLoginLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                signupFormContainer.style.display = 'none';
-                loginFormContainer.style.display = 'block';
-            });
+        function createKanbanTask(task) {
+            const taskElement = document.createElement('div');
+            taskElement.className = 'kanban-task';
+            taskElement.draggable = true;
+            taskElement.dataset.taskId = task.id;
+            taskElement.innerHTML = `
+                <div class="task-header">
+                    <h4>${task.title}</h4>
+                    <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+                </div>
+                <p class="task-description">${task.description}</p>
+                <div class="task-footer">
+                    <span class="task-assignee">${task.assignee}</span>
+                    <span class="task-due">Due: ${new Date(task.dueDate).toLocaleDateString()}</span>
+                </div>
+            `;
 
-            // --- SPA Navigation ---
-            const navigateTo = (hash) => {
-                const targetId = hash.substring(1);
+            // Add drag event listeners
+            taskElement.addEventListener('dragstart', handleDragStart);
+            taskElement.addEventListener('dragend', handleDragEnd);
 
-                contentSections.forEach(section => {
-                    section.classList.remove('active');
+            return taskElement;
+        }
+
+        // Calendar data loading
+        function loadCalendarData() {
+            const tasks = JSON.parse(localStorage.getItem('mockTasks')) || [];
+            const calendarContainer = document.querySelector('#calendar .calendar-grid');
+            const monthYearElement = document.querySelector('#calendar .calendar-month-year');
+            if (!calendarContainer) return;
+
+            // Clear existing calendar
+            calendarContainer.innerHTML = '';
+
+            // Generate calendar days
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            // Update month/year display
+            if (monthYearElement) {
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+                monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            }
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                calendarContainer.appendChild(emptyDay);
+            }
+
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.innerHTML = `<span class="day-number">${day}</span>`;
+
+                // Add tasks for this day
+                const dayTasks = tasks.filter(task => {
+                    const taskDate = new Date(task.dueDate);
+                    return taskDate.getDate() === day && taskDate.getMonth() === currentMonth;
                 });
 
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    targetSection.classList.add('active');
+                if (dayTasks.length > 0) {
+                    dayElement.classList.add('has-tasks');
+                    const tasksList = document.createElement('div');
+                    tasksList.className = 'day-tasks';
+                    dayTasks.forEach(task => {
+                        const taskDot = document.createElement('div');
+                        taskDot.className = `task-dot priority-${task.priority}`;
+                        taskDot.title = task.title;
+                        tasksList.appendChild(taskDot);
+                    });
+                    dayElement.appendChild(tasksList);
                 }
 
-                navLinks.forEach(navLink => {
-                    navLink.classList.remove('active');
-                    if (navLink.getAttribute('href') === hash) {
-                        navLink.classList.add('active');
-                    }
-                });
+                calendarContainer.appendChild(dayElement);
+            }
+        }
 
-                localStorage.setItem('picktask_activePage', hash);
+        // Activity data loading
+        function loadActivityData() {
+            const activities = JSON.parse(localStorage.getItem('mockActivities')) || [];
+            const activityContainer = document.querySelector('#activity .activity-list');
+            if (!activityContainer) return;
+
+            activityContainer.innerHTML = '';
+            activities.forEach(activity => {
+                const activityElement = createActivityItem(activity);
+                activityContainer.appendChild(activityElement);
+            });
+        }
+
+        function createActivityItem(activity) {
+            const activityElement = document.createElement('div');
+            activityElement.className = 'activity-item';
+            
+            const timeAgo = getTimeAgo(activity.timestamp);
+            
+            activityElement.innerHTML = `
+                <div class="activity-avatar">${activity.avatar}</div>
+                <div class="activity-content">
+                    <p class="activity-message">${activity.message}</p>
+                    <span class="activity-time">${timeAgo}</span>
+                </div>
+            `;
+            
+            return activityElement;
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - new Date(timestamp)) / 1000);
+            
+            if (diffInSeconds < 60) return 'Just now';
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+            return `${Math.floor(diffInSeconds / 86400)} days ago`;
+        }
+
+        // ========================================
+        // KANBAN DRAG & DROP FUNCTIONALITY
+        // ========================================
+
+        // Drag and Drop Event Handlers
+        let draggedTask = null;
+
+        function handleDragStart(e) {
+            draggedTask = e.target;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', e.target.outerHTML);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            draggedTask = null;
+            
+            // Remove drag over styles from all columns
+            document.querySelectorAll('.kanban-column').forEach(column => {
+                column.classList.remove('drag-over');
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.target.closest('.kanban-column').classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            const column = e.target.closest('.kanban-column');
+            if (!column.contains(e.relatedTarget)) {
+                column.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const column = e.target.closest('.kanban-column');
+            const tasksContainer = column.querySelector('.kanban-tasks');
+            const newStatus = column.dataset.column;
+            
+            if (draggedTask && tasksContainer) {
+                // Get task ID from dragged element
+                const taskId = parseInt(draggedTask.dataset.taskId);
+                
+                // Update task status in localStorage
+                updateTaskStatus(taskId, newStatus);
+                
+                // Move the task element to the new column
+                tasksContainer.appendChild(draggedTask);
+                
+                // Remove drag over styling
+                column.classList.remove('drag-over');
+                
+                // Update dashboard data if it's currently visible
+                const activeSection = document.querySelector('.page-section.active');
+                if (activeSection && activeSection.id === 'dashboard') {
+                    loadDashboardData();
+                }
+            }
+        }
+
+        function updateTaskStatus(taskId, newStatus) {
+            const tasks = JSON.parse(localStorage.getItem('mockTasks')) || [];
+            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            
+            if (taskIndex !== -1) {
+                tasks[taskIndex].status = newStatus;
+                localStorage.setItem('mockTasks', JSON.stringify(tasks));
+                
+                // Add activity log
+                addActivityLog(taskId, newStatus);
+            }
+        }
+
+        function addActivityLog(taskId, newStatus) {
+            const tasks = JSON.parse(localStorage.getItem('mockTasks')) || [];
+            const activities = JSON.parse(localStorage.getItem('mockActivities')) || [];
+            const activeUser = JSON.parse(localStorage.getItem('activeUser'));
+            
+            const task = tasks.find(t => t.id === taskId);
+            if (!task || !activeUser) return;
+            
+            const statusMessages = {
+                'todo': 'moved task to To Do',
+                'in-progress': 'moved task to In Progress',
+                'done': 'completed task'
             };
+            
+            const newActivity = {
+                id: Date.now(),
+                type: 'task_moved',
+                message: `${activeUser.name} ${statusMessages[newStatus]} "${task.title}"`,
+                timestamp: new Date(),
+                user: activeUser.name,
+                avatar: activeUser.name.split(' ').map(n => n[0]).join('')
+            };
+            
+            activities.unshift(newActivity);
+            
+            // Keep only the last 10 activities
+            if (activities.length > 10) {
+                activities.splice(10);
+            }
+            
+            localStorage.setItem('mockActivities', JSON.stringify(activities));
+        }
 
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
+        // ========================================
+        // EVENT LISTENERS & INITIALIZATION
+        // ========================================
+
+        // Add click event listeners to navigation items
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
                     e.preventDefault();
-                    navigateTo(link.getAttribute('href'));
+                    const pageId = item.getAttribute('data-page');
+                    navigateToPage(pageId);
                 });
-            });
-
-            // Initial call to set the app state
-            checkLoginState();
-
-            // --- Theme Switcher ---
-            const themeToggleBtn = document.getElementById('theme-toggle-btn');
-            themeToggleBtn.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                if (currentTheme === 'dark') {
-                    document.documentElement.removeAttribute('data-theme');
-                    localStorage.setItem('picktask_theme', 'light');
-                } else {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('picktask_theme', 'dark');
-                }
             });
         });
+
+        // ========================================
+        // APPLICATION INITIALIZATION
+        // ========================================
+
+        // Initialize
+        function init() {
+            initializeMockUsers();
+            initializeMockData();
+            loadTheme();
+            checkAuthStatus();
+        }
+
+        // Run initialization
+        init();
     </script>
 </body>
 </html>
